@@ -1,0 +1,17 @@
+Package: mc-fdd
+Version: 0.0.1-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 25
+Depends: mc (>= 3:4.8.26-1.1), cpmtools (>= 2.20-2), gawk (>= 1:5.1.0-1)
+Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Filename: ./mc-fdd_0.0.1-1_all.deb
+Size: 3912
+MD5sum: 00ca0dbfa49424b0cddad46910dbfbca
+SHA1: b3056b14bbda904564aae5fed3cc1005be7918b2
+SHA256: af8cc7d93340d0e3cfa4ba99d270af3a1641aac9a18c51caed6c5284eee5d555
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with FDD disk images
+
