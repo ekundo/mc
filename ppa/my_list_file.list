@@ -1,1 +1,1 @@
-deb [signed-by=/etc/apt/trusted.gpg.d/ppa.gpg] https://ekundo.github.io/mc/ppa ./
+deb [signed-by=/etc/apt/trusted.gpg.d/ekundo_ppa.gpg] https://ekundo.github.io/mc/ppa ./
