@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Thu, 02 Mar 2023 14:27:47 +0200
+Source: mc-fdd
+Binary: mc-fdd
+Architecture: all
+Version: 0.0.1-1
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-fdd     - A virtual filesystem to work with FDD disk images
+Changes:
+ mc-fdd (0.0.1-1) bullseye; urgency=medium
+ .
+   * Initial packaging work with dpkg-buildpackage.
+Checksums-Sha1:
+ b3056b14bbda904564aae5fed3cc1005be7918b2 3912 mc-fdd_0.0.1-1_all.deb
+ ef6d3327cacf8fc3fb21353dcbf064c190a1ce0b 5067 mc-fdd_0.0.1-1_armhf.buildinfo
+Checksums-Sha256:
+ af8cc7d93340d0e3cfa4ba99d270af3a1641aac9a18c51caed6c5284eee5d555 3912 mc-fdd_0.0.1-1_all.deb
+ 40cf10fc0946bf25d9d3668af77df3f0c6bd6c1e46b4397c6510029460aeeb6b 5067 mc-fdd_0.0.1-1_armhf.buildinfo
+Files:
+ 00ca0dbfa49424b0cddad46910dbfbca 3912 misc optional mc-fdd_0.0.1-1_all.deb
+ 06f7bfe1e1a3244ea944d8547fb2d818 5067 misc optional mc-fdd_0.0.1-1_armhf.buildinfo

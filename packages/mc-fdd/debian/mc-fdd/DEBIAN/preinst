@@ -1,0 +1,17 @@
+#!/bin/sh
+set -x
+#set -e
+
+if [ ! -f "/etc/mc/mc.ext" ]
+then
+	touch /etc/mc/mc.ext
+fi
+
+if [ ! -f "/etc/mc/mc.ext.ini" ]
+then
+	touch /etc/mc/mc.ext.ini
+fi
+
+
+
+exit 0

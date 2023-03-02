@@ -1,0 +1,3 @@
+diverted-files=diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+misc:Depends=
+misc:Pre-Depends=
