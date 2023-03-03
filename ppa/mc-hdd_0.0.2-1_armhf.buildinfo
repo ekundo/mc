@@ -5,16 +5,16 @@ Format: 1.0
 Source: mc-hdd
 Binary: mc-hdd
 Architecture: all
-Version: 0.0.1-1
+Version: 0.0.2-1
 Checksums-Md5:
- df503c3f441655784f44f6e740d7d1dc 3892 mc-hdd_0.0.1-1_all.deb
+ 7d1ec6eb2e97da9c85acb3594ca21fb2 3948 mc-hdd_0.0.2-1_all.deb
 Checksums-Sha1:
- 641469a3458f3bd9496c6af600f5f84f884f7f13 3892 mc-hdd_0.0.1-1_all.deb
+ 27832696be5ca1817f4938f7af099e93b64ff0f3 3948 mc-hdd_0.0.2-1_all.deb
 Checksums-Sha256:
- d07679f52f4189861fe444660c742fadb6a1509474c4f35b4a1281fb59d59d7f 3892 mc-hdd_0.0.1-1_all.deb
+ e0fbffc42c58fdbf04e4eda8b24e1cf92c0ed7170e902e2ab6986e79cf824427 3948 mc-hdd_0.0.2-1_all.deb
 Build-Origin: Raspbian
 Build-Architecture: armhf
-Build-Date: Fri, 03 Mar 2023 23:10:29 +0200
+Build-Date: Fri, 03 Mar 2023 23:16:18 +0200
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
 Installed-Build-Depends:
@@ -171,22 +171,22 @@ Environment:
  LANG="en_US.UTF-8"
  LC_ALL="en_US.UTF-8"
  LC_CTYPE="UTF-8"
- SOURCE_DATE_EPOCH="1677760067"
+ SOURCE_DATE_EPOCH="1677878106"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQCYkgSHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjEQsIQAKIBKU9lGw6NBV2i4mmzaxnyGyiYSr85
-o2tfWdXDKII4DLx4/Wn+xM5YF98Y33oRhlwMXQa3V9v0zglp+nuApmM0coI2hDt1
-WTT+JfjirqbxDo7WoGViRsRiqEpgWWnWoVoLAjAtOmf1du8rrXRJ1ndH/60VFlJo
-CORPymekLvDN38hnzlMFsGZbi3dcTYGqPu6Ish4zsRXUsydlTItZ5GGNzbssddEv
-p088GEZBFR9jUt/ZBa3MDyLeygjLq1O5ZMHk6z613c04HmbAh4ffu46dy/CVNfz2
-63of9rKy+xH3n+keHtvH+SGHs22QthTWpqwlV/5F2FebK4K3NgPwI2opAKVmXPx7
-jU8Qnnd0fVa43aabd4eqa8twwCTSmSpb5T3vmtHepBLoXY0ruKxapqjZ7nPP4E1p
-5V5Qzw9tx5x7IqHepcpEC659VVVTu+hB/yuwnKEfcvjPer4Hx+yXo2K0eNMssN19
-m6o1pedEUY+7WLB2IlkgNKrVeaKCiCrDJC1R1p/5VcwGi5ZZV3Ex+A4UpIw6WDP/
-GKdGtEvgur4stH6GfISAgmLw8WTjjOChEDKTA5I/jfxAFWmFNlqn+yR6UfaAiP09
-MMurrNlSblKPP+xGYIkkHm0zu4nF5u+K1Lbomow0bxL+9NrYbnG5ZZTptvMjxmUL
-iVV1sUu+i3qy
-=PIG2
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQCY6YSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjEgeEP/1WFJ8xtwtOQFWvk3rgvdlL/wyHZIqtN
+JOM0M+cvKSkOVN5jTMmOGM07eVrflbcLWb53qD/X9x+8RPAOogfrZs7XgNJw3c0v
+gHeZvqJdWyl/2VEcFSdj8xQk7yLCjTU9OyiEOdE17wowLEgWE1gypjZevUCcLEds
+RsvvA3Lkv+mm2rQNej3IOI5CSDGP1P9Lmw5ynXBwZHfbORqOXGktr18aVc+jD/u8
+kzRfCF0hZ6mWJiVpTeF9eIIoAmFxpWkFA7muo5q8BQKt/mIJUq2uH6s8aEIPrEf5
+uaM3dQB+CEwJVkNKWkG8DPvuhVUyF6eq6sjHf952SWGKcjVxG7dWxJHx/jhSRjHe
+jI0NkevXbW67L+fSmvLLGw9TrECyVRb2n0wnGwGTEhPyzTC4SaBfAdGX0bfLCnqG
+B+MfyGlUOkBOG8RlgqqFJ+h2Fz0tO5rgD+BuJAsqXo3ZPisu1NjkPG7X6ylpIT0q
+OkR3ZB0mmaZmjaMlyAJ66eKb8B5Bah787bfc+Q2Wj/d+1EdR8oJGa9ge0zq6gg+Y
+lB1ahLgrQScFgNZo/kJpeenoQgJgJDITBWf73mVD6Mq+FuYec95FNZ7pjlebWpl+
+gE6yPgK79rBdMsVBDb2jZDvR0X4H011W/XQyvfS16wj+7m50uP1CFfthEhVDxfd6
+66FZi3HX4uUM
+=mUtx
 -----END PGP SIGNATURE-----

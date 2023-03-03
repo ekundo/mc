@@ -10,19 +10,17 @@ HEAD=`which head 2>/dev/null` || HEAD=""
 DD=`which dd 2>/dev/null` || DD=""
 
 cpm_list() {
-  OWNER=$(ls -l "$1" | $GAWK '{ printf "%-8s %-8s\n", $3, $4 }')
+  OWNER=$(ls -l "$1" | $GAWK '{ printf "%-8s %-8s", $3, $4 }')
 
-  DISKS_RAW=$($XXD -u -p -l2 -s132 $1)
+  DISKS_RAW=$($XXD -u -p -l2 -s132 "$1")
   DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
   DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
 
-  FILE_DATE=$($DATE -r $1 "+%m-%d-%Y %H:%M:%S")
+  FILE_DATE=$($DATE -r "$1" "+%m-%d-%Y %H:%M:%S")
 
   for DISK in $($SEQ 1 $DISKS); do echo $DISK; done | $GAWK -v owner="$OWNER" -v file_date="$FILE_DATE" '
   {
-    perm = "-rw-rw-rw-"
-    size = 839680    
-    printf "%s   1 %s %8d %s disk_%04X.fdd\n", perm, owner, size, file_date, $1
+    printf "-rw-rw-rw-   1 %s   839680 %s disk_%04X.fdd\n", owner, file_date, $1
   }'
 
   exit 0
@@ -37,7 +35,7 @@ disk_hex_num() {
       num=""
     }
     print num
-  }'  
+  }'
 }
 
 cpm_copyout() {
@@ -47,12 +45,12 @@ cpm_copyout() {
     exit 1
   fi
 
-  $TAIL -c +1025 $1 | $HEAD -c 35840 > $3 2> /dev/null
-    
+  $TAIL -c +1025 "$1" | $HEAD -c 35840 > "$3" 2> /dev/null
+
   DISK=$(echo "obase=10;ibase=16;$DISK_HEX" | $BC)
   OFFSET=$(((DISK-1)*803840+36864+1))
 
-  $TAIL -c +$OFFSET $1 | $HEAD -c 803840 >> $3 2> /dev/null
+  $TAIL -c +$OFFSET "$1" | $HEAD -c 803840 >> "$3" 2> /dev/null
   exit $?
 }
 
@@ -69,7 +67,7 @@ cpm_copyin() {
       exit 1
   fi
 
-  DISKS_RAW=$($XXD -u -p -l2 -s132 $1)
+  DISKS_RAW=$($XXD -u -p -l2 -s132 "$1")
   DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
   DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
 
@@ -80,7 +78,7 @@ cpm_copyin() {
 
   OFFSET=$(((DISK-1)*1570+72))
 
-  $DD if=$3 of=$1 bs=512 skip=70 seek=$OFFSET count=1570 conv=notrunc &> /dev/null
+  $DD if="$3" of="$1" bs=512 skip=70 seek=$OFFSET count=1570 conv=notrunc &> /dev/null
   exit $?
 }
 
