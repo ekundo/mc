@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 GAWK=`which gawk 2>/dev/null` || GAWK=""
 XXD=`which xxd 2>/dev/null` || XXD=""
