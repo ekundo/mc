@@ -3,7 +3,7 @@ Version: 0.0.1-1
 Architecture: all
 Maintainer: Yauheni Kundo <e.kundo@gmail.com>
 Installed-Size: 25
-Depends: mc (>= 3:4.8.26-1.1), cpmtools (>= 2.20-2), gawk (>= 1:5.1.0-1)
+Depends: mc, cpmtools (>= 2.20-2), gawk
 Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Section: misc

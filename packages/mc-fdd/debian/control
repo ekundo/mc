@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 10), config-package-dev (>= 5.0)
 
 Package: mc-fdd
 Architecture: all
-Depends: ${misc:Depends}, mc (>= 3:4.8.26-1.1), cpmtools (>= 2.20-2), gawk (>= 1:5.1.0-1)
+Depends: ${misc:Depends}, mc, cpmtools (>= 2.20-2), gawk
 Provides: ${diverted-files}
 Conflicts: ${diverted-files}
 Description: A virtual filesystem to work with FDD disk images

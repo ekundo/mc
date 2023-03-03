@@ -18,29 +18,29 @@ Changes:
  .
    * Initial packaging work with dpkg-buildpackage.
 Checksums-Sha1:
- 72d8f5f8daeb0b4655ae0933299a2c25790fe921 3908 mc-fdd_0.0.1-1_all.deb
- d3d4f8328e9b277c76d7b2e589aec0e6987b8682 5975 mc-fdd_0.0.1-1_armhf.buildinfo
+ 41e6e22cd951fbf59c2f1717a81373c7c991fca8 3888 mc-fdd_0.0.1-1_all.deb
+ 7f4d4db01bd607ca1d406095fba89b82312df71e 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Checksums-Sha256:
- 62ca2636aae8c61036a4c0bc55aa1c04177792e3ad00a35fb2c05687be2becf3 3908 mc-fdd_0.0.1-1_all.deb
- 9af9706f139e0c4ff92a4c1bbea800280ff3a7a4b54a192af938c45fa6d3d63a 5975 mc-fdd_0.0.1-1_armhf.buildinfo
+ 51124a8dc0053629cac51ed51e63610c7a82c3b183e36fe73e8c5ef74ae62605 3888 mc-fdd_0.0.1-1_all.deb
+ 85f88ed2c3ed1c74b7ac1562a64df57f2e30bbe0717aa6a01cd9eacac00edbb3 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Files:
- ea8cd7a23bfe4eb09e46bb1f8f99f4f1 3908 misc optional mc-fdd_0.0.1-1_all.deb
- dcee9052add892f9afa36f4832bd9c10 5975 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
+ 8c6afd135dad148e87bb576416718cf9 3888 misc optional mc-fdd_0.0.1-1_all.deb
+ cdbc9cb11cd0a941fc2d5c43fe56c35b 5975 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQBXTQSHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjEussP/AxG8TaS5iRecNkhZETWynrLlXwZ7SmG
-XgwGK2dtbv+FyKiEBqyIcI71RxUajohTXEcLCgPZRyky10HqY1EjX27QX7y3xp8H
-PWAauJPU5eByBqjZUrHcoGj2IrbWKDvRT4lr3ZzKFMha0shZqcDA1vyd6ck8RgRc
-6+iPSasK0bW2lWR3g4DZ3CJXKbnoaDssFCW/lMa/DlfY72opLQI8NwiGYokZQMEK
-U6nvv+NzQZeEPA2ncTBQ1q5T3FDmiTCrzL0tAOFAreTaVMzWwtfaujLHun3tZoNx
-PQiRYc9aZIa8Woy1wRgPKNXW+jpSp+yrXqbrQWZYN41Yy2Y+77lJlVyWPZ7Ux4VA
-PzGii8YfxYBBo8VLrpZiJBt3A8tTviLZ0WXdefQcv5phdu/Gq5f/iGy9IDOgMkFD
-GRSsijuiDfoPSXbzi820J57dQMHqErSB/DBdyL7HncPP5pJIdooLeMXl4aB45rCa
-dFk1yGz0t6/ova9roBBpxrd50uUaTRdNRgugPfkE+JonqBkymmrF/qXiPwuMh2a2
-QbA4H/HLEen89Axhdm6Km0zMxa8dZKyi7E2TjJyCU6YA2GMYV5GPW0xVSGhb0HVm
-v1U6VB/pnWaXiaDDhQRGXm2lj9497enkIIxHalbl4KFBVyjDLRT/SUItqrYfcJrA
-jIQ1DEus+n6v
-=CEFf
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQBvyQSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjEJpAP/0jp+Q+CM/hucVf10TufmxQtPA5ZYrKS
+Z/6sF/D/epzC9sRElzFZalBRgclbC3YZSmFF9Chg0iYBavlM51/JhsPC97FAtGTx
+iGEUE26qiMamEPP1FnWQe1Qc4kHVzyTUUpsOEXAZtrCgk/uoCOFtHLVbcxlssmm1
+mb5NnuQ08f7z0yHwlZ/eDXfWlewp8LYuayN5qvMahuNXXL2alJ3hQ0jOv/slMIRc
+sUr1cMEZ0thKTsz7gMR6vUUTT6K4AZsR6V9zEwtqqoSh3nBRpTEyw1qhKq0PqLSD
+qLzElE1kOkjjdein8Onkx4GAvhSit+rjLhodQY5poqAX5B6WuY1QCN7+VE6qJwn7
+s0mTnKbWohrniH5Ia1Zvh+7aIkXrG7hDnKAr5OhnWACtFCCzLpYKNbkknefaVoml
+E1w5KWo6GYtNunQg/fIsIbFF5c4kOwuyRnc/RBlNZzhSNGCzzaPohU+5hyV55Uyt
+ZETqyPGVQftM6PI8m2HprfZM8l+pcz+7ZSU0emQ1xWPwcVcFhSXGh3qnerX+ZfHu
+yL70nr84xIFSM4UuHI1rWPx3LBP4v9y2pKFjoWxy2bflbLPSjCQOKUFs1wb8acYZ
+kESJFxXMhgUi3faBb1l4NXNe96+CBNWYdpEOFD3E5UesJCtGRcJcMlFdU4uyv56i
+cj8dQ1i2dni8
+=5OoT
 -----END PGP SIGNATURE-----
