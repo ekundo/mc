@@ -80,7 +80,7 @@ cpm_copyin() {
 
   OFFSET=$(((DISK-1)*1570+72))
 
-  $DD if=$3 of=$1 bs=512 iseek=70 oseek=$OFFSET count=1570 conv=notrunc &> /dev/null
+  $DD if=$3 of=$1 bs=512 skip=70 seek=$OFFSET count=1570 conv=notrunc &> /dev/null
   exit $?
 }
 

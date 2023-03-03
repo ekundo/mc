@@ -25,9 +25,9 @@ Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Filename: ./mc-hdd_0.0.1-1_all.deb
 Size: 3916
-MD5sum: 671f0dfe5cfe670d6f63b0abee2f9c22
-SHA1: fbd23c8235abeed39818feab1930865834d7c12e
-SHA256: 3935d3815f1d79344ca43c45ea255e01dab0c9272aa97e5c7c5b0ba84664b748
+MD5sum: e5018d445965e674780597330fdc9eaf
+SHA1: 91c2d60df5d01ed58aab7e7a7a045b6aea34b8c9
+SHA256: 53b742f4d13b210a2a7aaa99d6a43c793c74376d00a675dcf967b93b213b0b48
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with HDD disk images
