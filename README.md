@@ -1,7 +1,5 @@
 # Installing on Linux
 
-## Official sources
-
 ### Debian, Ubuntu Linux, Raspberry Pi OS (apt)
 
 Install:
@@ -13,6 +11,7 @@ curl -s --compressed "https://ekundo.github.io/mc/ppa/KEY.gpg" | gpg --dearmor |
 && sudo apt update \
 && sudo apt install mc-fdd mc-hdd -y
 ```
+
 
 # Demo
 
