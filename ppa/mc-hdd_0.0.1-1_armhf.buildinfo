@@ -2,19 +2,19 @@
 Hash: SHA512
 
 Format: 1.0
-Source: mc-fdd
-Binary: mc-fdd
+Source: mc-hdd
+Binary: mc-hdd
 Architecture: all
 Version: 0.0.1-1
 Checksums-Md5:
- 00ca0dbfa49424b0cddad46910dbfbca 3912 mc-fdd_0.0.1-1_all.deb
+ 80f21b4c572d6f896c5e93b2e3189231 3916 mc-hdd_0.0.1-1_all.deb
 Checksums-Sha1:
- b3056b14bbda904564aae5fed3cc1005be7918b2 3912 mc-fdd_0.0.1-1_all.deb
+ 29bb91c46ddd6a5e5c96442f263bbdfd59f5f7ba 3916 mc-hdd_0.0.1-1_all.deb
 Checksums-Sha256:
- af8cc7d93340d0e3cfa4ba99d270af3a1641aac9a18c51caed6c5284eee5d555 3912 mc-fdd_0.0.1-1_all.deb
+ 798da62c33a9d64ef07c06058141b2d3342183b553a205ed3aef89775838bdea 3916 mc-hdd_0.0.1-1_all.deb
 Build-Origin: Raspbian
 Build-Architecture: armhf
-Build-Date: Fri, 03 Mar 2023 03:06:30 +0200
+Build-Date: Fri, 03 Mar 2023 03:05:51 +0200
 Build-Tainted-By:
  merged-usr-via-aliased-dirs
 Installed-Build-Depends:
@@ -175,18 +175,18 @@ Environment:
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQBSBkSHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjEkigP/3DBTnAgOw/c2gCvg+24ZKT7Cb58lytn
-5+4ojvld81/pKpdQHd2fkLQl96SCvDyzN/ruQldOv5rHrFNwhD6AIJsF6s6cIK7o
-EIXvByfr3tQLUotKT1bqSNNw8YLoqFkJinmcmeYfBNLLrkEWh5lVUx2LVW8KAP8Z
-/5oBli73dUBqEYbCMGTI5crh56tbiybe0N2G7zencAqIoHEzeVRqYQm+TNpdh0Pj
-asUbEiEJjepgOTDooSBrC9jOYJqKLDUSxmgmpIDa6t73zq1qMOK7HcVAO4NPQqrV
-p1ml8BrFwMYA+TtsH4x/7BSOuxqCl2A5ruHD1+hnj6oElKANvV9zVdLofjo3mbww
-QtFkm7mZ4E1oBmuLqTm3lA4s4e8boP3G6nCY69dbStASfPNwVL14ZcRmrMRWdvao
-6gbFwS+r3j/oVxAsko9Xw5KYvdNBTPQ+WyR/aNo3L9EzVjAakam+ZEr3LJTBkSG1
-v8rpmXgm9Q2Wvvx4eySp/sHtAGQuI11vE2hxxZu4ByrOYIKACCZPjxEZMKyBtFio
-pytXY17kwMYJyZCbPH2ALwJBTFpQImBdQL90C5e/fE6WaSvbfMfY8oJs6SIUKnmr
-0uGxbhPJ1L30gAdSnX7H0SJCtIe9gkSoO/sD5hbo1aRECxad1vRCaMcWw5n+hbcI
-7phD2Rvza+55
-=XINz
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQBR/MSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjEt8MP/2BLAi1DJGyjgSLQps17sX74bngHRMfc
+BVUXcM4qj/uYthSlAx6qjwqclRkPFSkQYBoofQzLINs0Vv7EgRKkpq/pZzt7cbiH
+D63KPQt1i/JsrBWXhLSTWgW5J84HZzuCAMgamGs6CrOjU1OKB7ZHmKLDOD1taT64
+HY6xmsRxG7/u3JTWrIaS35CjtW/33Hq25nwsTY+DnDOe+ZPvHKmpSeLo2j53O8J4
+CuT+tAVKgWwngvLkBDHVZOUpUbQpjREHP/GN4VG75wi2Ia/wY1C9MZ5+uu2hTY07
+xJd81+IRtzPlyegfhW6SOx5pF825FActH0PABe2e7T7EFIRAYlvfhDdm2Scxq1+o
+2Wl+M4UZJYTDjjHcbjPWuWut0BJWOM3xPMOygE5R/hj7lI3mtFqbGl4WeHKfDy3s
+B9SAprue6he4E+7qlQOvcyNJltESF2UOAj6DjtqLoqBPWmZOSLJQTciX81eD94Fv
+FSWqk0APo0j2rp2pnThtd7vf3gaMGkHWbW0jL4+rTF7fycmkskVpTifNmwXnLLh7
+UNy5eoC74xRClj2X1nSoflB/LM+dnBVRbgKXDIMK1X4fCfOxzseMPLEK3iYX+R7N
+aA43FWASxNIMQS/VkeBQpBLZn9qUacIASSt53XUmkz43WVCRIV5+UaOcJwv3t4uX
+kE2cXWzAOG1Y
+=hf/E
 -----END PGP SIGNATURE-----

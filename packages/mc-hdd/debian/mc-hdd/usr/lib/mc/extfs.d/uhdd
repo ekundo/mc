@@ -1,0 +1,133 @@
+#!/bin/sh
+
+GAWK=`which gawk 2>/dev/null` || GAWK=""
+XXD=`which xxd 2>/dev/null` || XXD=""
+DATE=`which date 2>/dev/null` || DATE=""
+BC=`which bc 2>/dev/null` || BC=""
+SEQ=`which seq 2>/dev/null` || SEQ=""
+TAIL=`which tail 2>/dev/null` || TAIL=""
+HEAD=`which head 2>/dev/null` || HEAD=""
+DD=`which dd 2>/dev/null` || DD=""
+
+cpm_list() {
+  OWNER=$(ls -l "$1" | $GAWK '{ printf "%-8s %-8s\n", $3, $4 }')
+
+  DISKS_RAW=$($XXD -u -p -l2 -s132 $1)
+  DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
+  DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
+
+  FILE_DATE=$($DATE -r $1 "+%m-%d-%Y %H:%M:%S")
+
+  for DISK in $($SEQ 1 $DISKS); do echo $DISK; done | $GAWK -v owner="$OWNER" -v file_date="$FILE_DATE" '
+  {
+    perm = "-rw-rw-rw-"
+    size = 839680    
+    printf "%s   1 %s %8d %s disk_%04X.fdd\n", perm, owner, size, file_date, $1
+  }'
+
+  exit 0
+}
+
+disk_hex_num() {
+  echo "$1" | $GAWK '
+  {
+    if (match($0, /^disk_([0-9A-F]{4})/, arr)) {
+      num=arr[1]
+    } else {
+      num=""
+    }
+    print num
+  }'  
+}
+
+cpm_copyout() {
+  DISK_HEX=$(disk_hex_num "$2")
+  if [ "$DISK_HEX" = "" ]; then
+    echo "Error: file not found" >&2
+    exit 1
+  fi
+
+  $TAIL -c +1025 $1 | $HEAD -c 35840 > $3 2> /dev/null
+    
+  DISK=$(echo "obase=10;ibase=16;$DISK_HEX" | $BC)
+  OFFSET=$(((DISK-1)*803840+36864+1))
+
+  $TAIL -c +$OFFSET $1 | $HEAD -c 803840 >> $3 2> /dev/null
+  exit $?
+}
+
+cpm_copyin() {
+  DISK_HEX=$(disk_hex_num "$2")
+  if [ "$DISK_HEX" = "" ]; then
+    echo "Error: invalid destionation" >&2
+    exit 1
+  fi
+  DISK=$(echo "obase=10;ibase=16;$DISK_HEX" | $BC)
+
+  if [ $DISK -lt 1 ]; then
+      echo "Error: invalid destionation" >&2
+      exit 1
+  fi
+
+  DISKS_RAW=$($XXD -u -p -l2 -s132 $1)
+  DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
+  DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
+
+  if [ $DISK -gt $DISKS ]; then
+      echo "Error: invalid destionation" >&2
+      exit 1
+  fi
+
+  OFFSET=$(((DISK-1)*1570+72))
+
+  $DD if=$3 of=$1 bs=512 iseek=70 oseek=$OFFSET count=1570 conv=notrunc &> /dev/null
+  exit $?
+}
+
+if [ -z "$GAWK" ]; then
+    echo "Error: could not find gawk" >&2
+    exit 1
+fi
+if [ -z "$XXD" ]; then
+    echo "Error: could not find xxd" >&2
+    exit 1
+fi
+if [ -z "$DATE" ]; then
+    echo "Error: could not find date" >&2
+    exit 1
+fi
+if [ -z "$BC" ]; then
+    echo "Error: could not find bc" >&2
+    exit 1
+fi
+if [ -z "$SEQ" ]; then
+    echo "Error: could not find seq" >&2
+    exit 1
+fi
+if [ -z "$TAIL" ]; then
+    echo "Error: could not find tail" >&2
+    exit 1
+fi
+if [ -z "$HEAD" ]; then
+    echo "Error: could not find head" >&2
+    exit 1
+fi
+if [ -z "$DD" ]; then
+    echo "Error: could not find dd" >&2
+    exit 1
+fi
+
+LC_ALL=C
+export LC_ALL
+umask 077
+
+cmd="$1"
+shift
+
+case "$cmd" in
+  list)    cpm_list    "$@" ;;
+  copyout) cpm_copyout "$@" ;;
+  copyin)  cpm_copyin  "$@" ;;
+  *) exit 1 ;;
+esac
+exit 0

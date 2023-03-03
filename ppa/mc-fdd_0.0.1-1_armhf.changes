@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Format: 1.8
 Date: Thu, 02 Mar 2023 14:27:47 +0200
 Source: mc-fdd
@@ -16,10 +19,28 @@ Changes:
    * Initial packaging work with dpkg-buildpackage.
 Checksums-Sha1:
  b3056b14bbda904564aae5fed3cc1005be7918b2 3912 mc-fdd_0.0.1-1_all.deb
- ef6d3327cacf8fc3fb21353dcbf064c190a1ce0b 5067 mc-fdd_0.0.1-1_armhf.buildinfo
+ e1f795e823579e1d145140ffc55b88edee78339d 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Checksums-Sha256:
  af8cc7d93340d0e3cfa4ba99d270af3a1641aac9a18c51caed6c5284eee5d555 3912 mc-fdd_0.0.1-1_all.deb
- 40cf10fc0946bf25d9d3668af77df3f0c6bd6c1e46b4397c6510029460aeeb6b 5067 mc-fdd_0.0.1-1_armhf.buildinfo
+ dbf519b5b81a8986118f435f26e73e5d09ecda3c9f493e62ddd47dfd83772abc 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Files:
  00ca0dbfa49424b0cddad46910dbfbca 3912 misc optional mc-fdd_0.0.1-1_all.deb
- 06f7bfe1e1a3244ea944d8547fb2d818 5067 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
+ a67d2599d72c7a10fb58e3a3838318a4 5975 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQBSBoSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjERC4QAKbEQH5T3vIYy8glpwJn2Zmtnl2XnIm4
+T2wEeMxnz+H6Yogg6YUYe1cRsrlAR6kQuLBkcdb2DjpmufNLoeygctJ4T0zLmWS6
+DCkDbNVZLo+OfUocVg0gaHrTWxedIOhNyHaYyZAtsdqMAhLAWVfn1LOAjqBeFbTC
+eW7a+ztkHkn6zLCTfRq4doQr8ZaQEgSSIeEYdxCHVZ3jwv3IxYkK6EPQ1/AoOviu
+7qRtNAT2yDny2Diwr0bjucHwZrX+3sNY/UHOAv5fDbtnCG5ZRehgCMN7OfEbKrmy
+5S0AuJrMyXX467R4CAfgZaqUM8PAld9L4OSCv4ge+xZW062J0yvsNlPEjh5jubAR
+FuQTZncRpgQqUP/RUwU7HOGyGFY2RHgD0W5Pt0+9np+arY3QR4fvq/ALbw0NrNcb
+FxWkpLMLLLHbwuappZM8tpV9Xkm2QN7x5MUoDGq8CC4HvbAIPv3RTTJKIynDZ9nS
+d97BAdcP+takaC0SXoGxek8RhtXqmSdevuSOrap0gdNHg+Dyxt7eshlGfI/lcBwp
+u5QYomV2iSY/ftajINW45t8GHkQSt3NPgeQgssU6W2zVs8uuciKDA5IhvNdd+90a
+nTrXNxIkpyZ33jk00YbpNOMq0JALqYgqdLS2NHyRiaaSnCAK4dd1lWQAzhfWlo65
+rtZd+jHXIybq
+=NE2M
+-----END PGP SIGNATURE-----

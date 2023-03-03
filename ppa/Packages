@@ -15,3 +15,20 @@ Section: misc
 Priority: optional
 Description: A virtual filesystem to work with FDD disk images
 
+Package: mc-hdd
+Version: 0.0.1-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 23
+Depends: mc-fdd (>= 0.0.1-1), xxd, bc
+Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Filename: ./mc-hdd_0.0.1-1_all.deb
+Size: 3916
+MD5sum: 80f21b4c572d6f896c5e93b2e3189231
+SHA1: 29bb91c46ddd6a5e5c96442f263bbdfd59f5f7ba
+SHA256: 798da62c33a9d64ef07c06058141b2d3342183b553a205ed3aef89775838bdea
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with HDD disk images
+

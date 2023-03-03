@@ -1,0 +1,6 @@
+mc-hdd (0.0.1-1) bullseye; urgency=medium
+
+  * Initial packaging work with dpkg-buildpackage.
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Thu, 02 Mar 2023 14:27:47 +0200
+
