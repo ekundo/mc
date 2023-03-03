@@ -1,0 +1,26 @@
+#!/usr/bin/bash
+
+SDIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+cd $SDIR/packages
+
+for PKG in $(ls -1); do
+	cd $SDIR/packages/$PKG
+	dpkg-buildpackage -b
+done
+
+cd $SDIR
+
+mv packages/*.deb ppa/
+mv packages/*.buildinfo ppa/
+mv packages/*.changes ppa/
+
+EMAIL="e.kundo@gmail.com"
+
+cd $SDIR/ppa
+
+dpkg-scanpackages --multiversion . > Packages
+gzip -k -f Packages
+apt-ftparchive release . > Release
+gpg --default-key "$EMAIL" -abs -o - Release > Release.gpg
+gpg --default-key "$EMAIL" --clearsign -o - Release > InRelease
