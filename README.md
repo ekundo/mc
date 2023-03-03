@@ -13,3 +13,7 @@ curl -s --compressed "https://ekundo.github.io/mc/ppa/KEY.gpg" | gpg --dearmor |
 && sudo apt update \
 && sudo apt install mc-fdd mc-hdd -y
 ```
+
+# Demo
+
+[![asciicast](https://asciinema.org/a/OGqfSFJljih71xtAEb10getNv.svg)](https://asciinema.org/a/OGqfSFJljih71xtAEb10getNv)
