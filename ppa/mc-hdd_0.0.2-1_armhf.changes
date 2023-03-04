@@ -19,28 +19,28 @@ Changes:
    * Fixed bug with spaces in the image path.
 Checksums-Sha1:
  27832696be5ca1817f4938f7af099e93b64ff0f3 3948 mc-hdd_0.0.2-1_all.deb
- 5379d430b032203bdba155e65eb255563206e2d9 5975 mc-hdd_0.0.2-1_armhf.buildinfo
+ 39fe74112f89a4df9bc230e93fd8ce586fa031a3 5975 mc-hdd_0.0.2-1_armhf.buildinfo
 Checksums-Sha256:
  e0fbffc42c58fdbf04e4eda8b24e1cf92c0ed7170e902e2ab6986e79cf824427 3948 mc-hdd_0.0.2-1_all.deb
- 2fa225cfa2c9fc02b6e9268b19d53980377ac8ad23fdedf4899e2ec2b70f2b66 5975 mc-hdd_0.0.2-1_armhf.buildinfo
+ f48bd5ec060b8137d0f9731e976976ebecce63676f7f448a6ba35eed4f6e3c96 5975 mc-hdd_0.0.2-1_armhf.buildinfo
 Files:
  7d1ec6eb2e97da9c85acb3594ca21fb2 3948 misc optional mc-hdd_0.0.2-1_all.deb
- e999a343c7e3a9cc09ba5d2b20ad08f2 5975 misc optional mc-hdd_0.0.2-1_armhf.buildinfo
+ 0d011ee3efe778c573248abd3ff339d5 5975 misc optional mc-hdd_0.0.2-1_armhf.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQCY6YSHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjE/jkQALDtYnK1GOR1AVoynkmqjIM6PBJXnIGA
-NpMtDZKJIo9bkmDPWCzQpDzJYHim4UCZLQx1F8iHqx8menhPrxcKDtmuRUcR7Gnc
-a92+LO4ph3WcYs3OHOZfMqBTzygTgiHddczb4gnhtmXyXgIYqxT1Z3K6PO2jMaTR
-eCV9LE+YSMm0m13Q1uRpFzAVop2HDMN85ojuJdSh+i337niZmRUUZn0NLkoDIRMj
-+7zuj+XhjRJISX+6LyXJmF4qtFXjRljJ4JQ+f/MlKLEUKtKDVqi5Dz4BISPsIPDT
-Unqb8yY74o/LI+Jfm5mzJ2VcdHkj7x/msA7h7vQgAAz+gN8EsOrHSdq4fThSxq6V
-8L8raGki2MPNe9Yx139Wzc4tQ6YORizvumk7sprMOwgrvKb2TzoZOFkcRQ1RiClz
-7a7+P5P/dRElM1UkFO4yv/4uIwQhNaSuQwOBvgToBEjQMhW1uc5NTMXFWTP22RCP
-fO0UAiNqU95t8FGf1jvLbJPEFTFtcMH2vRPSfmAYCPiRKAGlKNvxQG8aCNwS2Wzy
-US+ZIsoubGrrGAxjbR//iON+K930MmrWA3NH9u//d2rIwko5WdKjnhA4IS/pPZwB
-s0b9EPSPFvZi1wq4b5sZERE/iKgldXtOFebby1OrkVU6VZGgqqUa7Kg+MCZNhYZ7
-aeVOQwtpVd7Z
-=RjU0
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQDyHwSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjEFe0QAMOT3o33js2Mbu7oZ6Luu/ukZQpmS5am
+cRURyuatSvti/ka+zm4zeedEnx6XjCpFBsoKRavPnw62F/DlbHWL6q11IHRMwtLk
+q5x3GkSBdB9eQJq9AlrMJF9NIsCJsMiCK9nkhG71V8h9HWoUi+v3uHm5QpHB8qvz
+wkbU1OOMLIYkubyZ2rf735U1bLIqPg3L4ktttTytu29y2zkEX/O0TYM9DGBUFRmN
+Fe1wtjbDG/D1FKffJ1j9ESeTriC4bEhmdkf9dwE1+7Az4p3LZDUsMVvIbeJkg8gi
+FM0m+YdSgCRCtZz8JwiK6Sr73slfg4WqaKOvv74DgCE7wl2DeG70YvScMbwoJzRU
+rqKpYANUYzxJWge/JRAW0cNdh/qzWihdwozS3Wvqhs0Ap8/duhH+TEI+I+PrGAlc
+PIcvnZ7zWej/HqYzQrPc5RxW7yfhDKjjzw6qNYBRAx78E29R2GJA8zfgOq/sIGaB
+2AKcQGGekUYMNfH32+/3f3Rx7o0CEgF9Los1M2ZeJjrad5gYmmLrXjPag7/0+N5j
+2ur03ke1Qv5j8d/FPUVo1vJX4cIqgj51Xt/b0itzPwmRZ/SP8rbzLRRolRics4gi
+SelYbTjMq0t4+4MUWiR2ok4QwZ2gB8A9zbw1PA5LMVxBLbqETScESxJe2v3AD72h
+dS9nbdsB5TdM
+=r/na
 -----END PGP SIGNATURE-----

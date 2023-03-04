@@ -19,28 +19,28 @@ Changes:
    * Initial packaging work with dpkg-buildpackage.
 Checksums-Sha1:
  41e6e22cd951fbf59c2f1717a81373c7c991fca8 3888 mc-fdd_0.0.1-1_all.deb
- 87a702dc8fb47965bf06675f09fa19f84018f4c4 5975 mc-fdd_0.0.1-1_armhf.buildinfo
+ e210ebb55e68418439e064de2dcca44c42191ef7 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Checksums-Sha256:
  51124a8dc0053629cac51ed51e63610c7a82c3b183e36fe73e8c5ef74ae62605 3888 mc-fdd_0.0.1-1_all.deb
- 332a563831657d6e561a7107d17ca2003b36f055c442cdc61229e81f592b8ecc 5975 mc-fdd_0.0.1-1_armhf.buildinfo
+ ba447674827c317d4a240b532014c22f8997a3cd156f46a5891ebc1ef203a188 5975 mc-fdd_0.0.1-1_armhf.buildinfo
 Files:
  8c6afd135dad148e87bb576416718cf9 3888 misc optional mc-fdd_0.0.1-1_all.deb
- cfedbcf1313deceaeff515d47bd1a99f 5975 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
+ 11e504137b877e34723a4bf84c1ef460 5975 misc optional mc-fdd_0.0.1-1_armhf.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQCY44SHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjEn7cP/3z8sDjDmHkfsw4xA/q35qXsvLeTrPIR
-+uGGGGaaZIyfyWJaYb0O/1OAs4IVXtm3lWNR7QF93VffBq2alNMgvFn7mNEs7hsw
-U4G39Y5cC3gXmlPFigzwWzFJVFstvTsL7jwC8TUVWCzuFdmcgdXQc0FQGpgPEaul
-NrJtrZ2g+q94jMBB33PoOCMoG9w56PW7XmPJ/vdLBhZ44vO/mRjQbE+rRQRxc2+0
-7LYrRpuNkCY7ullSYDNqa5GtEjWG4pZrzFxBVSk820yUD0NRoAP2s3PbvYKcer5v
-L6pYuzv21IlBsjzpcoweptOdnFjOxo7gGcvG2yXU3EeSEruCVm2fSE1gSU2NvzD6
-HbPyNt8ObwsOfYQmvVGVUaA0Z6iSASgRYd6do4gh+k0Wa5emNMsVLoGIOgg5DkXb
-jlTOUvcFPNHJKyM/WpbRcAVVEsGbdIWRtQTkTqZrNRYrWPDuQHqlVsH/vw8HfJV1
-eTvnGk4HztGqNRA7ivy76fw2RFif1KiDWB3qzWSmDIW57Lv0W4Vh6glF/OJMjFxq
-/hOHpCxtar5M05Pq9ZyQ8Z+e6I3mZSurWhWRrpt/ExbhIr0GdArIw6dqgSBC0kDp
-3hdAfovtpSbZhlMcFd8/cg1uah9yEFOiMlEc7jvSGyxED1If1MwnF22IDXrFqQKm
-gdkYRFmBAJ7M
-=GJL/
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQDyGQSHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjECWoQALbeXv4IIAlQxMBkY9v5Yw55gtEDlHNc
+WWPAzZcqPM1nf8/Btyuchy17umD98DPoKgbu7RwW25/fXFQmN5EVugaL3hnrTNJc
+YqUU52hwnmFm/wTyHiHU9KtR8FtKugrfc+7SrUG5U/sgQYSDrB+9+jS8TmeZfnIq
+xmwLL8Pqj40DE1q9ytqPc4mMxjShJ75p1DaaAIZNIyaMVs68eh44X7E3nOGA2AQJ
+Ql+T43XA7f2H9SQICGEIfAQ1ePtl/+ZMiCROMMf8eVjE/KkEt+WisQi1R5GC4PyT
+nL3a5+ciQemyTol8UcY5r4DNGOyeedtGG84ZQiaHbBKzY0VofkUtkktTgRhBiipc
+63fgCdpJEp8MKcIpI/CpKabLvXqePblpAmUMvtPSWHVXyGer/LiH3amph6nXV2wo
+Gp6bR2tHK1vvfsu+xTzKtlX27YFYxs0hfq2VqBMrjUfLRVMszo6P7TEmXOLxIqNF
+NWrff08vupuBntOd8P4tTnHv0IbDfi83kUcUgvV1ydnkwTFF3nd4YIk5EI1/oCjA
+PDSxWSPB2eytxAvwYuR0MJwqHjpiojffAndaJmfbS45YGb+waIDem6lrI/aJ/ZRu
+lI6NOQ1HgxfHvu7gskNkvccaP/0i5YDbX5DGjhcmVqXmJiMaEpYKA8effCKstWJZ
+ZtymksvKSIoO
+=W32k
 -----END PGP SIGNATURE-----

@@ -6,6 +6,7 @@ cd $SDIR/packages
 
 for PKG in $(ls -1); do
 	cd $SDIR/packages/$PKG
+	tar -czvf $SDIR/ppa/$PKG.tar.gz *
 	dpkg-buildpackage -b
 done
 
