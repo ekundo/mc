@@ -1,3 +1,9 @@
+mc-fdd (0.0.2-1) bullseye; urgency=medium
+
+  * Bug fix
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Sun, 12 Mar 2023 19:45:47 +0200
+
 mc-fdd (0.0.1-1) bullseye; urgency=medium
 
   * Initial packaging work with dpkg-buildpackage.

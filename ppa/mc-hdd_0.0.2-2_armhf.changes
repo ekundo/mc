@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 12 Mar 2023 19:47:06 +0200
+Source: mc-hdd
+Binary: mc-hdd
+Architecture: all
+Version: 0.0.2-2
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-hdd     - A virtual filesystem to work with HDD disk images
+Changes:
+ mc-hdd (0.0.2-2) bullseye; urgency=medium
+ .
+   * mc-fdd version bumped.
+Checksums-Sha1:
+ 86b637209560869b7ad73cb16b28ab60b29b602a 3976 mc-hdd_0.0.2-2_all.deb
+ 62e93d1e1fad40fd5850bd4b130285c255457d8d 5975 mc-hdd_0.0.2-2_armhf.buildinfo
+Checksums-Sha256:
+ c706c3958311374a346ea1b2d67eefcc25731a5ba80a1eb65b043a94623b7c70 3976 mc-hdd_0.0.2-2_all.deb
+ a8d947ee4394d2c1461547b29a16147e6d2a100c745daa90b86727425f97b41d 5975 mc-hdd_0.0.2-2_armhf.buildinfo
+Files:
+ d37b10ddfb9b53308e3b423eefb01f44 3976 misc optional mc-hdd_0.0.2-2_all.deb
+ ebd69423cfeb35ef6cae6fe71c186120 5975 misc optional mc-hdd_0.0.2-2_armhf.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQOLJISHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjExicP+wfijWUGZBcduCkBKxx+YN1fJFvPLwm0
+1SpgE/TNEoirtyBv0TQphNjpT3w9Plaj32L8Pf8ba5OFfoP6XmdV5Ut64ZgBgZGR
+o8VuL1r7bK0SKUTl3CvDquAaAfUh9QZGgN64nQb7u69mtHaIktM2kSsIOKoxYVWR
+6cMErmn2EfzmxJy2kNo1WLz5n0WKHGOONmxHJXuqmvR2wT1pD3qJUt7NN2Fk2WrT
+A4GiaclS/AcFWHGj/Ymypt3JJagUNaAQaJPQNUMPi9R8xQdyrzKUfoggzM1oHuiH
+vHRni0do52JACONPifhjS1Dz75pOOG1USBMHKQxCFJgq611m6ONgbg3eCBUSplIg
+VTDKFV2fktzr3VWFL9c3xzm1WccN5N3fAWJITAUCkRjb0aNrDZLEBsggwKMm38UT
+eLq6oOaDN1OVqgsCDcLpsxT87WquL11eDQYwrPRftRBcv5QPOmTU4Y2dovbZVwOq
+wBG14x8mY0jinXx1MAY+I/sJR+3qSYSq/aLcTm1j1Gy0HcBC1efHGeGu7zj9vNkv
+PBRopXr1aQ78Y59mXf5XaB9x5zuEsSoga2lrOG2AyJ45TBe4Xorc5dnSSoZJMenK
+S5LWzGnFiyKSsY9hFltsTgmc/oU/qiLnq+yvze7XyvzKWdRAuBsDYm0YGdvSrNmf
+yXubeNyCpbVh
+=67l0
+-----END PGP SIGNATURE-----

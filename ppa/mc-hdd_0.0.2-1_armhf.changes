@@ -19,28 +19,28 @@ Changes:
    * Fixed bug with spaces in the image path.
 Checksums-Sha1:
  27832696be5ca1817f4938f7af099e93b64ff0f3 3948 mc-hdd_0.0.2-1_all.deb
- 39fe74112f89a4df9bc230e93fd8ce586fa031a3 5975 mc-hdd_0.0.2-1_armhf.buildinfo
+ a22b504b2900a999b6191066a1fbd4186e1b18b1 5975 mc-hdd_0.0.2-1_armhf.buildinfo
 Checksums-Sha256:
  e0fbffc42c58fdbf04e4eda8b24e1cf92c0ed7170e902e2ab6986e79cf824427 3948 mc-hdd_0.0.2-1_all.deb
- f48bd5ec060b8137d0f9731e976976ebecce63676f7f448a6ba35eed4f6e3c96 5975 mc-hdd_0.0.2-1_armhf.buildinfo
+ 7cfeaa2660fbc8c1ff4b498e474e48ef1cb5219f40764e6c5c43d8c9ed14942b 5975 mc-hdd_0.0.2-1_armhf.buildinfo
 Files:
  7d1ec6eb2e97da9c85acb3594ca21fb2 3948 misc optional mc-hdd_0.0.2-1_all.deb
- 0d011ee3efe778c573248abd3ff339d5 5975 misc optional mc-hdd_0.0.2-1_armhf.buildinfo
+ 58727937d1a55c23644db50d2e2eb157 5975 misc optional mc-hdd_0.0.2-1_armhf.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQDyHwSHGUua3VuZG9A
-Z21haWwuY29tAAoJEFq0FO8xfDjEFe0QAMOT3o33js2Mbu7oZ6Luu/ukZQpmS5am
-cRURyuatSvti/ka+zm4zeedEnx6XjCpFBsoKRavPnw62F/DlbHWL6q11IHRMwtLk
-q5x3GkSBdB9eQJq9AlrMJF9NIsCJsMiCK9nkhG71V8h9HWoUi+v3uHm5QpHB8qvz
-wkbU1OOMLIYkubyZ2rf735U1bLIqPg3L4ktttTytu29y2zkEX/O0TYM9DGBUFRmN
-Fe1wtjbDG/D1FKffJ1j9ESeTriC4bEhmdkf9dwE1+7Az4p3LZDUsMVvIbeJkg8gi
-FM0m+YdSgCRCtZz8JwiK6Sr73slfg4WqaKOvv74DgCE7wl2DeG70YvScMbwoJzRU
-rqKpYANUYzxJWge/JRAW0cNdh/qzWihdwozS3Wvqhs0Ap8/duhH+TEI+I+PrGAlc
-PIcvnZ7zWej/HqYzQrPc5RxW7yfhDKjjzw6qNYBRAx78E29R2GJA8zfgOq/sIGaB
-2AKcQGGekUYMNfH32+/3f3Rx7o0CEgF9Los1M2ZeJjrad5gYmmLrXjPag7/0+N5j
-2ur03ke1Qv5j8d/FPUVo1vJX4cIqgj51Xt/b0itzPwmRZ/SP8rbzLRRolRics4gi
-SelYbTjMq0t4+4MUWiR2ok4QwZ2gB8A9zbw1PA5LMVxBLbqETScESxJe2v3AD72h
-dS9nbdsB5TdM
-=r/na
+iQJGBAEBCgAwFiEEOxW7321v3HQbe+hYWrQU7zF8OMQFAmQOHvESHGUua3VuZG9A
+Z21haWwuY29tAAoJEFq0FO8xfDjEzQAP/AnbBFLC+BM1L8Enc6dDpNv9P9U8dTIn
+L6JQT+6p5zFiU7wsz9wFHhV9ECYB6eGgCc8uR2ZYeCrgqRLMQf2KrukekP20MHFt
+Tz66Svu1ol1kqvkIIGyUZHZF9gNMm4y063JlnSlcWrPMPFy3Fx1U8nLJcFiO3xyt
+dnURj8sCEVA5FUKQUE2O9hUvEZw9BIfy4YnY8HEhaCiko3lZsSP3GPkVAwJ0/3cj
+6xCyoqeBhqcNzoZOWqYkYsMA99cFXa/JVHdT4ijNTxcz0YkEZNSk1YyKLRU/nzGz
+6EAywpwo7gNQ+9YN1wa6v0mi0xDvw5LBIgK6xr8+LOPlqxeF2BFKfJdxU1jbljao
+67WRf+yDtzC/KeuqupgcOXKM6d9tHFmJXQ+H+b+lCxEL/vQHdI7QDWNzCvrRdYr5
++v+s4nUcOjF8WrCPWCg+Fv4V6W/W2Hw1rj6J5Q+Vj8e4jITKw7KCHI8AW5nMhpb9
+htFGXkabqFnLvFZbCJLb8TsNyOY90zN7byLHLCtNlnJGW8S0+yimX4MmfTarMMeh
+oK1kUA827lKTtFHGNpb4qz/TGJHZAj8O1yOtYZii7GPsxYB75Xbqu/aAsLa6WzYL
+z6yqsqWbQKZuL7pzrgTFbaLKwnlmGsdVbomddsoU/X5tEPO1QZ8VcjhzMh2siSrc
+EPh68pHrEvsf
+=ryss
 -----END PGP SIGNATURE-----

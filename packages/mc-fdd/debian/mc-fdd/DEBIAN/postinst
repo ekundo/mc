@@ -176,7 +176,7 @@ case "$1" in
 			/etc/mc/mc.ext.mc-fdd-orig > /etc/mc/mc.ext.mc-fdd
 		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n[fdd]\nRegex=\.([fF][dD][dD])$\nOpen=%cd %p/ufdd://|' \
 			/etc/mc/mc.ext.ini.mc-fdd-orig > /etc/mc/mc.ext.ini.mc-fdd
-		echo 'diskdef v06\n  seclen 1024\n  tracks 160\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n' | \
+		echo 'diskdef v06\n  seclen 1024\n  tracks 164\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n' | \
 			cat - /etc/cpmtools/diskdefs.mc-fdd-orig > /etc/cpmtools/diskdefs.mc-fdd
 	;;
 

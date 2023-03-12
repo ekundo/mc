@@ -52,8 +52,12 @@ cpm_copyout() {
       echo "Error: could not find cpmcp" >&2
       exit 1
   fi
-  $CMPCP $FMT -p "$1" "$SOURCE" "$3" &> /dev/null
-  exit $?
+  ERR=$($CMPCP $FMT -p "$1" "$SOURCE" "$3")
+  if [ ! $? -eq 0 ]; then
+      echo "Error: $ERR" >&2
+      exit 1
+  fi
+  exit 0
 }
 
 cpm_copyin() {
@@ -62,8 +66,12 @@ cpm_copyin() {
       echo "Error: could not find cpmcp" >&2
       exit 1
   fi
-  $CMPCP $FMT -p "$1" "$3" "$DEST" &> /dev/null
-  exit $?
+  ERR=$($CMPCP $FMT -p "$1" "$3" "$DEST")
+  if [ ! $? -eq 0 ]; then
+      echo "Error: $ERR" >&2
+      exit 1
+  fi
+  exit 0
 }
 
 cpm_rm() {
@@ -72,8 +80,12 @@ cpm_rm() {
       echo "Error: could not find cpmrm" >&2
       exit 1
   fi
-  $CMPRM $FMT "$1" "$FILE" &> /dev/null
-  exit $?
+  ERR=$($CMPRM $FMT "$1" "$FILE")
+  if [ ! $? -eq 0 ]; then
+      echo "Error: $ERR" >&2
+      exit 1
+  fi
+  exit 0
 }
 
 cpm_mkdir() {

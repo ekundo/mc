@@ -1,9 +1,9 @@
 Package: mc-hdd
-Version: 0.0.2-1
+Version: 0.0.2-2
 Architecture: all
 Maintainer: Yauheni Kundo <e.kundo@gmail.com>
 Installed-Size: 23
-Depends: mc-fdd (>= 0.0.1-1), xxd, bc
+Depends: mc-fdd (>= 0.0.2-1), xxd, bc
 Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Section: misc

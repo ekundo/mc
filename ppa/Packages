@@ -7,10 +7,27 @@ Depends: mc, cpmtools (>= 2.20-2), gawk
 Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Filename: ./mc-fdd_0.0.1-1_all.deb
-Size: 3888
-MD5sum: 8c6afd135dad148e87bb576416718cf9
-SHA1: 41e6e22cd951fbf59c2f1717a81373c7c991fca8
-SHA256: 51124a8dc0053629cac51ed51e63610c7a82c3b183e36fe73e8c5ef74ae62605
+Size: 3900
+MD5sum: da45974034cfe6677221846c1675fe14
+SHA1: 30958d8b501cb070541b38e60e7f0fb4cbd63f2e
+SHA256: bf7f211793b16137ff414a42078d7d8d2de33eaaaad6d5845382583ec76e8ad6
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with FDD disk images
+
+Package: mc-fdd
+Version: 0.0.2-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 25
+Depends: mc, cpmtools (>= 2.20-2), gawk
+Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Filename: ./mc-fdd_0.0.2-1_all.deb
+Size: 3932
+MD5sum: 71415e19f2ed67473ede12dd780dae20
+SHA1: 574f93cc5bcc2d8d11394c9e5e3fd773daf45d33
+SHA256: b9b47d9a98c34f1d800b9b9bf5595e3e652f69e8f98e6180cd4a67fcb7f0bb36
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with FDD disk images
@@ -45,6 +62,23 @@ Size: 3948
 MD5sum: 7d1ec6eb2e97da9c85acb3594ca21fb2
 SHA1: 27832696be5ca1817f4938f7af099e93b64ff0f3
 SHA256: e0fbffc42c58fdbf04e4eda8b24e1cf92c0ed7170e902e2ab6986e79cf824427
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with HDD disk images
+
+Package: mc-hdd
+Version: 0.0.2-2
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 23
+Depends: mc-fdd (>= 0.0.2-1), xxd, bc
+Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Filename: ./mc-hdd_0.0.2-2_all.deb
+Size: 3976
+MD5sum: d37b10ddfb9b53308e3b423eefb01f44
+SHA1: 86b637209560869b7ad73cb16b28ab60b29b602a
+SHA256: c706c3958311374a346ea1b2d67eefcc25731a5ba80a1eb65b043a94623b7c70
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with HDD disk images
