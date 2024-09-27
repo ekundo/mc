@@ -1,0 +1,44 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 27 Sep 2024 12:58:00 +0200
+Source: mc-fdd
+Binary: mc-fdd
+Built-For-Profiles: noudeb
+Architecture: all
+Version: 0.0.3-1
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-fdd     - A virtual filesystem to work with FDD disk images
+Changes:
+ mc-fdd (0.0.3-1) bullseye; urgency=medium
+ .
+   * Bug fix
+Checksums-Sha1:
+ b11a29d0f30f1f3752521db767a955eaef31161f 3930 mc-fdd_0.0.3-1_all.deb
+ e64abbad6e78c87950c568bfeef5582a6d29446f 6567 mc-fdd_0.0.3-1_arm64.buildinfo
+Checksums-Sha256:
+ 3964fec7dd63eb7947e2b1f39a89e4b2df1ff17e61df7723cf955f05985c920b 3930 mc-fdd_0.0.3-1_all.deb
+ f574d037640407a34e7bbed85af43bf261e63b92bc3b840f149f866508db82c1 6567 mc-fdd_0.0.3-1_arm64.buildinfo
+Files:
+ 70cda84171f7617db96c21b4cb5e7e54 3930 misc optional mc-fdd_0.0.3-1_all.deb
+ 09771308649cb4bba47e2dd461d6335f 6567 misc optional mc-fdd_0.0.3-1_arm64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQHGBAEBCgAwFiEEsuMr3/LvmL/yCJ4bRfFnjTaBwMQFAmb2g7sSHGUua3VuZG9A
+Z21haWwuY29tAAoJEEXxZ402gcDEs+YL/0Z/GzEY/c+cGfVmfxbLGRFfqge46ZHN
+wTeXNcvk+Xl66Sb5+c3fkTbNYr/w5kLIJerlXsOW9yLCTL2959IlPohXak9j++QE
+4RkaDKBX/HxTQ4wHKnclbEqekJgzyLjtnIM4RVU9kjl9IyE3f/+HSeJX58OiUS5L
+CZ5lB5BJhEYZAS9elxMA+ZZADixpY1NRVoWa6YxmHEXdSX7d6DtXL1RMVlH3yQ/m
+MO1WYdMoNoF0j+UB2SYIyGjZdtjpYd0c2RVNJnZlSP7GJfU3Q6N2XvTq5Z/kDLNo
+pBZghr7dCuKihodUx1sMu/Ol7eVZ0AtKKJFDZi/zH6tQ8ZMwLAqOwsY/n0ebTtsV
+4pkjP+wBpNJrB94FpkQTRDusuK2nxaCBTGqqnhliFg2DCwoyFgEoMXyRUNhUzIaE
+h0CWb9szdAJ4x1URj4Th0OWXw/PFBBSMX18U/l/2DD4iupVMGvFV85adWRQVvgyJ
+b0VCFDXTva701dZlTkf72BsS3Yo/yNX28Q==
+=OPYp
+-----END PGP SIGNATURE-----

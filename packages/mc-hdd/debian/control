@@ -6,7 +6,7 @@ Build-Depends: debhelper (>= 10), config-package-dev (>= 5.0)
 
 Package: mc-hdd
 Architecture: all
-Depends: ${misc:Depends}, mc-fdd (>= 0.0.2-1), xxd, bc
+Depends: ${misc:Depends}, mc-fdd (>= 0.0.3-1), xxd, bc
 Provides: ${diverted-files}
 Conflicts: ${diverted-files}
 Description: A virtual filesystem to work with HDD disk images

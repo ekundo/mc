@@ -1,0 +1,44 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 27 Sep 2024 13:05:00 +0200
+Source: mc-hdd
+Binary: mc-hdd
+Built-For-Profiles: noudeb
+Architecture: all
+Version: 0.0.3-1
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-hdd     - A virtual filesystem to work with HDD disk images
+Changes:
+ mc-hdd (0.0.3-1) bullseye; urgency=medium
+ .
+   * Bug fix.
+Checksums-Sha1:
+ d4e37bc323839dd5f5960e2569518e6cfb39848c 3970 mc-hdd_0.0.3-1_all.deb
+ 95b5ce0f8990f9d21396f82f8aca39d6841b7a0d 6567 mc-hdd_0.0.3-1_arm64.buildinfo
+Checksums-Sha256:
+ 4b58e1bfb83f6b15cf5ef992ec10bf6eeff7c976981509995225b3d3fc0b38c7 3970 mc-hdd_0.0.3-1_all.deb
+ 7450d77b389d148d5cda815ac1074562f807f48a20483b14efff97805a088b18 6567 mc-hdd_0.0.3-1_arm64.buildinfo
+Files:
+ ec016596c2dbc5443f42113884e59f5f 3970 misc optional mc-hdd_0.0.3-1_all.deb
+ 62d297240487e6151a3766945bb2b589 6567 misc optional mc-hdd_0.0.3-1_arm64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQHGBAEBCgAwFiEEsuMr3/LvmL/yCJ4bRfFnjTaBwMQFAmb2g70SHGUua3VuZG9A
+Z21haWwuY29tAAoJEEXxZ402gcDE+GoL/jDhd7YQk/oWURPwhsd06NLzHWfe8cjP
+Hum9tu0T6wQfBq1AulCHn/a3Vy76LUn0wqmc0sPe8jjqQJJs430ntJ78ovBMFupg
+6htlh3lDAxImRG5faHx0Vg2A19zyi6Lp1pLR5MojeSQVO12emrXXTXtEgYhZZPFU
+oq6AqpM98Nk3T0gq1rDyKX+Zz+k/Lxg0aw4Xg1nTfCgrsTjapCPdnGnBenD8vkGU
+OuRWI4rDjyhn1G+KqUVFfJJJPy4gYoksxprmTNMMFFp2mAR9Dd1rJHt2gTuNvVuQ
+kyMKc1Jk5f0Ji0PaalQheFIyLTqtxzgqhiJgoC0PcUU5gC/Qt8PPyzVFLxcDLOJs
+8J9fKDCf0rFjHyFoYH3htN/OB6Bd808nlAvRrldfDizKxlcfWYXHi1rz9ku/OJgs
+ZZvsDlp7NR/J4MBI++2lmB4QCxRIWn8oziWjjVO03cdDjt8nzwqIMRGJFo/a8UZQ
+oI6vjzSBYWmPNP/HJz2tt/zNsO7D0zZ7qg==
+=tw8Y
+-----END PGP SIGNATURE-----

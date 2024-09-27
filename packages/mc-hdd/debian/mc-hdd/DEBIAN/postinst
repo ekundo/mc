@@ -173,7 +173,7 @@ case "$1" in
 	configure)
 		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n# hdd images\nregex/\.([hH][dD][dD])$\n  Open=%cd %p/uhdd://|' \
 			/etc/mc/mc.ext.mc-fdd.mc-hdd-orig > /etc/mc/mc.ext.mc-fdd.mc-hdd
-		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n[hdd]\nRegex=\.([hH][dD][dD])$\nOpen=%cd %p/uhdd://|' \
+		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n[hdd]\nRegex=\\\.([hH][dD][dD])$\nOpen=%cd %p/uhdd://|' \
 			/etc/mc/mc.ext.ini.mc-fdd.mc-hdd-orig > /etc/mc/mc.ext.ini.mc-fdd.mc-hdd
 	;;
 

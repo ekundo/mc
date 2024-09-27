@@ -24,10 +24,27 @@ Depends: mc, cpmtools (>= 2.20-2), gawk
 Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
 Filename: ./mc-fdd_0.0.2-1_all.deb
-Size: 3932
-MD5sum: 71415e19f2ed67473ede12dd780dae20
-SHA1: 574f93cc5bcc2d8d11394c9e5e3fd773daf45d33
-SHA256: b9b47d9a98c34f1d800b9b9bf5595e3e652f69e8f98e6180cd4a67fcb7f0bb36
+Size: 3898
+MD5sum: 03f0649c65e84bdb6d6d5699a115c80b
+SHA1: eef9302eb25d044ec86109beef00a130c0ae56a2
+SHA256: 4dbd2d304506a2089387acc29da75c853cb8e9a03bb41a0b09f56595ecc20219
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with FDD disk images
+
+Package: mc-fdd
+Version: 0.0.3-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 25
+Depends: mc, cpmtools (>= 2.20-2), gawk
+Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Filename: ./mc-fdd_0.0.3-1_all.deb
+Size: 3930
+MD5sum: 70cda84171f7617db96c21b4cb5e7e54
+SHA1: b11a29d0f30f1f3752521db767a955eaef31161f
+SHA256: 3964fec7dd63eb7947e2b1f39a89e4b2df1ff17e61df7723cf955f05985c920b
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with FDD disk images
@@ -75,10 +92,27 @@ Depends: mc-fdd (>= 0.0.2-1), xxd, bc
 Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
 Filename: ./mc-hdd_0.0.2-2_all.deb
-Size: 3976
-MD5sum: d37b10ddfb9b53308e3b423eefb01f44
-SHA1: 86b637209560869b7ad73cb16b28ab60b29b602a
-SHA256: c706c3958311374a346ea1b2d67eefcc25731a5ba80a1eb65b043a94623b7c70
+Size: 3942
+MD5sum: 38f3d9ddcc008f066288be9dd84cfa34
+SHA1: b595d58e41750037f056fb34e7abe6416f4cb02c
+SHA256: 31b47d73e955bf004cb3dda7a0c504c30f91b2ba1f40d553696f3cd7735b59cb
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with HDD disk images
+
+Package: mc-hdd
+Version: 0.0.3-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 23
+Depends: mc-fdd (>= 0.0.3-1), xxd, bc
+Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Filename: ./mc-hdd_0.0.3-1_all.deb
+Size: 3970
+MD5sum: ec016596c2dbc5443f42113884e59f5f
+SHA1: d4e37bc323839dd5f5960e2569518e6cfb39848c
+SHA256: 4b58e1bfb83f6b15cf5ef992ec10bf6eeff7c976981509995225b3d3fc0b38c7
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with HDD disk images
