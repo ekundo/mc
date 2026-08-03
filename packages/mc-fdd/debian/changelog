@@ -1,3 +1,15 @@
+mc-fdd (0.0.5-1) bullseye; urgency=medium
+
+  * Pre-Depends on mc, so that mc is configured before this package is
+    unpacked. Installing both in one go on a machine without mc left dpkg
+    asking about the modified mc.ext.ini and the installation failed.
+  * The generated files are written under the name they carry once mc-hdd has
+    displaced them. Writing to the displaced name followed the symlink of
+    mc-hdd, so on an upgrade the entries of mc-fdd were lost and the old ones
+    came back from the copy mc-hdd had kept.
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Mon, 03 Aug 2026 17:00:00 +0200
+
 mc-fdd (0.0.4-1) bullseye; urgency=medium
 
   * ufdd carries the v06 disk format itself and no longer depends on the

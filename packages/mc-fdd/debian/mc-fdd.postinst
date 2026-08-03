@@ -43,15 +43,20 @@ insert_after() {
 case "$1" in
 
 	configure)
+		# mc-hdd displaces the files written here to build on top of them, so the
+		# names are looked up: writing to the displaced name would follow the symlink
+		# it leaves behind and overwrite the output of mc-hdd instead.
 		insert_after '^Version[[:space:]]*=' \
-			/etc/mc/mc.ext.ini.mc-fdd-orig /etc/mc/mc.ext.ini.mc-fdd ext_ini_block
+			"$(dpkg-divert --truename /etc/mc/mc.ext.ini)" \
+			"$(dpkg-divert --truename /etc/mc/mc.ext.ini.mc-fdd)" ext_ini_block
 		insert_after '^### Miscellaneous ###' \
-			/etc/mc/mc.ext.mc-fdd-orig /etc/mc/mc.ext.mc-fdd ext_block
+			"$(dpkg-divert --truename /etc/mc/mc.ext)" \
+			"$(dpkg-divert --truename /etc/mc/mc.ext.mc-fdd)" ext_block
 		# ufdd carries the v06 format itself, this one is for cpmtools used by hand.
 		{
 			printf 'diskdef v06\n  seclen 1024\n  tracks 164\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n\n'
-			cat /etc/cpmtools/diskdefs.mc-fdd-orig
-		} > /etc/cpmtools/diskdefs.mc-fdd
+			cat "$(dpkg-divert --truename /etc/cpmtools/diskdefs)"
+		} > "$(dpkg-divert --truename /etc/cpmtools/diskdefs.mc-fdd)"
 	;;
 
 	*)

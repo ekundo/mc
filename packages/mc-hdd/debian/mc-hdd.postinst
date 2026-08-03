@@ -43,10 +43,14 @@ insert_after() {
 case "$1" in
 
 	configure)
+		# The input is what mc-fdd wrote, under the name it got when this package
+		# displaced it.
 		insert_after '^Version[[:space:]]*=' \
-			/etc/mc/mc.ext.ini.mc-fdd.mc-hdd-orig /etc/mc/mc.ext.ini.mc-fdd.mc-hdd ext_ini_block
+			"$(dpkg-divert --truename /etc/mc/mc.ext.ini.mc-fdd)" \
+			"$(dpkg-divert --truename /etc/mc/mc.ext.ini.mc-fdd.mc-hdd)" ext_ini_block
 		insert_after '^### Miscellaneous ###' \
-			/etc/mc/mc.ext.mc-fdd.mc-hdd-orig /etc/mc/mc.ext.mc-fdd.mc-hdd ext_block
+			"$(dpkg-divert --truename /etc/mc/mc.ext.mc-fdd)" \
+			"$(dpkg-divert --truename /etc/mc/mc.ext.mc-fdd.mc-hdd)" ext_block
 	;;
 
 	*)
