@@ -1,0 +1,11 @@
+# dpkg-buildpackage leftovers
+packages/*/debian/.debhelper/
+packages/*/debian/debhelper-build-stamp
+packages/*/debian/files
+packages/*/debian/*.substvars
+packages/*/debian/*.debhelper
+packages/mc-fdd/debian/mc-fdd/
+packages/mc-hdd/debian/mc-hdd/
+packages/*.buildinfo
+packages/*.changes
+packages/*.deb
