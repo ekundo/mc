@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Mon, 03 Aug 2026 17:00:00 +0200
+Source: mc-hdd
+Binary: mc-hdd
+Architecture: all
+Version: 0.0.5-1
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-hdd     - A virtual filesystem to work with HDD disk images
+Changes:
+ mc-hdd (0.0.5-1) bullseye; urgency=medium
+ .
+   * mc-fdd version bumped.
+Checksums-Sha1:
+ 21a793c20fae7bb9c35e0d0485d1e5c5e61d5f98 5152 mc-hdd_0.0.5-1_all.deb
+ 4748292b8f3c696b1b3dac05183b8316829d2965 4529 mc-hdd_0.0.5-1_arm64.buildinfo
+Checksums-Sha256:
+ 3dbaba901cf4910e7289efa571fde1a6f67c5da096ad87c0ad66111617bbeda6 5152 mc-hdd_0.0.5-1_all.deb
+ e910545b93ac4b3c04bd411db5625c5b53d2deebc2eb91b5260ff5dccaf5d318 4529 mc-hdd_0.0.5-1_arm64.buildinfo
+Files:
+ 623f21014ed14cad40a74c32bb3f05aa 5152 misc optional mc-hdd_0.0.5-1_all.deb
+ a1f2978dc1decdfd386e01341ad45f95 4529 misc optional mc-hdd_0.0.5-1_arm64.buildinfo

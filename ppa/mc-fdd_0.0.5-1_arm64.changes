@@ -1,0 +1,31 @@
+Format: 1.8
+Date: Mon, 03 Aug 2026 17:00:00 +0200
+Source: mc-fdd
+Binary: mc-fdd
+Architecture: all
+Version: 0.0.5-1
+Distribution: bullseye
+Urgency: medium
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Changed-By: Yauheni Kundo <e.kundo@gmail.com>
+Description:
+ mc-fdd     - A virtual filesystem to work with FDD disk images
+Changes:
+ mc-fdd (0.0.5-1) bullseye; urgency=medium
+ .
+   * Pre-Depends on mc, so that mc is configured before this package is
+     unpacked. Installing both in one go on a machine without mc left dpkg
+     asking about the modified mc.ext.ini and the installation failed.
+   * The generated files are written under the name they carry once mc-hdd has
+     displaced them. Writing to the displaced name followed the symlink of
+     mc-hdd, so on an upgrade the entries of mc-fdd were lost and the old ones
+     came back from the copy mc-hdd had kept.
+Checksums-Sha1:
+ 3879c0a055e0f12d6b69f63268a2d93cbcc2a49c 5996 mc-fdd_0.0.5-1_all.deb
+ e1588e13c4515da20f15734b8be9c2f58ec5d6aa 4529 mc-fdd_0.0.5-1_arm64.buildinfo
+Checksums-Sha256:
+ 474139d6b959d6ccd8020700a2b686c474c6f0caf2e9434f7f2889fcde191fa0 5996 mc-fdd_0.0.5-1_all.deb
+ 02b9b9e04fe9c8c9b67e5235d4de030c7978a34ad21ce182350d1cfc4ce23aac 4529 mc-fdd_0.0.5-1_arm64.buildinfo
+Files:
+ 1b8b07fcd6fc6f9183c25fc4ea8b0436 5996 misc optional mc-fdd_0.0.5-1_all.deb
+ bafc70a7336b824bac3c353a19333baf 4529 misc optional mc-fdd_0.0.5-1_arm64.buildinfo

@@ -49,6 +49,24 @@ Section: misc
 Priority: optional
 Description: A virtual filesystem to work with FDD disk images
 
+Package: mc-fdd
+Version: 0.0.5-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 28
+Pre-Depends: mc
+Depends: cpmtools (>= 2.20-2), gawk
+Conflicts: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Provides: diverts-etc++cpmtools++diskdefs, diverts-etc++mc++mc.ext, diverts-etc++mc++mc.ext.ini
+Filename: ./mc-fdd_0.0.5-1_all.deb
+Size: 5996
+MD5sum: 1b8b07fcd6fc6f9183c25fc4ea8b0436
+SHA1: 3879c0a055e0f12d6b69f63268a2d93cbcc2a49c
+SHA256: 474139d6b959d6ccd8020700a2b686c474c6f0caf2e9434f7f2889fcde191fa0
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with FDD disk images
+
 Package: mc-hdd
 Version: 0.0.1-1
 Architecture: all
@@ -113,6 +131,23 @@ Size: 3970
 MD5sum: ec016596c2dbc5443f42113884e59f5f
 SHA1: d4e37bc323839dd5f5960e2569518e6cfb39848c
 SHA256: 4b58e1bfb83f6b15cf5ef992ec10bf6eeff7c976981509995225b3d3fc0b38c7
+Section: misc
+Priority: optional
+Description: A virtual filesystem to work with HDD disk images
+
+Package: mc-hdd
+Version: 0.0.5-1
+Architecture: all
+Maintainer: Yauheni Kundo <e.kundo@gmail.com>
+Installed-Size: 26
+Depends: mc-fdd (>= 0.0.5-1), coreutils
+Conflicts: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Provides: diverts-etc++mc++mc.ext.ini.mc-fdd, diverts-etc++mc++mc.ext.mc-fdd
+Filename: ./mc-hdd_0.0.5-1_all.deb
+Size: 5152
+MD5sum: 623f21014ed14cad40a74c32bb3f05aa
+SHA1: 21a793c20fae7bb9c35e0d0485d1e5c5e61d5f98
+SHA256: 3dbaba901cf4910e7289efa571fde1a6f67c5da096ad87c0ad66111617bbeda6
 Section: misc
 Priority: optional
 Description: A virtual filesystem to work with HDD disk images
