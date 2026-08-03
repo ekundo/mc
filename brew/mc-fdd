@@ -1,0 +1,255 @@
+#!/bin/bash
+#
+# mc-fdd — hook the Vector-06C extfs plugins into Midnight Commander for the current user.
+#
+# Homebrew may only write inside its own prefix, and mc looks for extfs plugins in its
+# own keg and in the user data directory, so the last step is left to this script:
+# it links ufdd and uhdd into ~/.local/share/mc/extfs.d and teaches ~/.config/mc/mc.ext.ini
+# to open *.fdd and *.hdd files with them.
+
+set -u
+
+SELF=${0##*/}
+LIBEXEC=${MC_FDD_LIBEXEC:-$(cd -- "$(dirname -- "$0")" && pwd)}
+PLUGINS="ufdd uhdd"
+
+BEGIN_MARK="# >>> mc-fdd >>>"
+END_MARK="# <<< mc-fdd <<<"
+
+read -r -d '' EXT_BLOCK << 'EOF'
+# >>> mc-fdd >>>
+# Vector-06C disk images — https://github.com/ekundo/mc
+[fdd]
+Regex=\\.fdd$
+RegexIgnoreCase=true
+Open=%cd %p/ufdd://
+
+[hdd]
+Regex=\\.hdd$
+RegexIgnoreCase=true
+Open=%cd %p/uhdd://
+# <<< mc-fdd <<<
+EOF
+
+die() {
+  echo "$SELF: $*" >&2
+  exit 1
+}
+
+usage() {
+  cat << EOF
+usage: $SELF install|uninstall|status
+
+  install    link the extfs plugins into the mc user data directory and register
+             *.fdd and *.hdd in the mc user extension file
+  uninstall  undo it
+  status     show what is installed where
+EOF
+}
+
+# mc knows its own directories, they are worth asking about: a build may use paths
+# other than the XDG defaults used as a fallback here.
+mc_dir() {
+  local what=$1 dir=""
+
+  if command -v mc > /dev/null 2>&1; then
+    dir=$(TERM=${TERM:-dumb} mc -F 2> /dev/null | awk -v what="$what" '
+      /^\[User data\]/   { user = 1 }
+      /^\[System data\]/ { user = 0 }
+      user && $1 == what":" { print $2 }
+      user && $1 == what && $2 == "directory:" { print $3 }
+    ' | tail -n 1)
+  fi
+  printf '%s\n' "${dir%/}"
+}
+
+extfs_dir() {
+  local dir
+  dir=$(mc_dir extfs.d)
+  [ -n "$dir" ] || dir="${XDG_DATA_HOME:-$HOME/.local/share}/mc/extfs.d"
+  printf '%s\n' "$dir"
+}
+
+ext_file() {
+  local dir
+  dir=$(mc_dir Config)
+  [ -n "$dir" ] || dir="${XDG_CONFIG_HOME:-$HOME/.config}/mc"
+  printf '%s\n' "$dir/mc.ext.ini"
+}
+
+# The extension file mc ships with, used to seed the user copy: mc reads the user
+# file instead of, not in addition to, the system one.
+system_ext_file() {
+  local dir
+  dir=$(TERM=${TERM:-dumb} mc -F 2> /dev/null | awk '
+    /^\[System data\]/ { sys = 1 }
+    /^\[User data\]/   { sys = 0 }
+    sys && $1 == "Config" && $2 == "directory:" { print $3 }
+  ' | tail -n 1)
+  printf '%s\n' "${dir%/}/mc.ext.ini"
+}
+
+# A seeded copy would freeze the handlers of a Homebrew mc at the version installed
+# today and break on the next upgrade, since the file spells out the keg it came
+# from. The opt prefix points at the current keg, so use that instead.
+unversion_keg_paths() {
+  case "$1" in
+    */Cellar/*) sed -e "s|${1%/Cellar/*}/Cellar/\([^/]*\)/[^/]*/|${1%/Cellar/*}/opt/\1/|g" ;;
+    *) cat ;;
+  esac
+}
+
+seed_ext_file() {
+  local target=$1 system
+  system=$(system_ext_file)
+
+  mkdir -p "$(dirname "$target")" || die "could not create $(dirname "$target")"
+  if [ ! -r "$system" ]; then
+    printf '[mc.ext.ini]\nVersion=4.0\n' > "$target" ||
+      die "could not write $target"
+    echo "  $target created (mc has no mc.ext.ini to copy from)"
+    return 0
+  fi
+  unversion_keg_paths "$system" < "$system" > "$target" || die "could not write $target"
+  echo "  $target seeded from $system"
+}
+
+has_block() {
+  [ -f "$1" ] && grep -qF "$BEGIN_MARK" "$1"
+}
+
+add_block() {
+  local file=$1 tmp=$1.mc-fdd.$$ block=$1.mc-fdd-block.$$ status
+
+  printf '%s\n' "$EXT_BLOCK" > "$block" || die "could not write $block"
+  # The block goes right below the file metadata, before every other section: mc
+  # takes the first match, so a rule further down cannot claim our images first.
+  awk -v block="$block" '
+    { print }
+    !done && /^Version[[:space:]]*=/ {
+      print ""
+      while ((getline line < block) > 0) print line
+      close(block)
+      done = 1
+    }
+    END { exit done ? 0 : 3 }
+  ' "$file" > "$tmp"
+  status=$?
+  rm -f "$block"
+  case $status in
+    0) ;;
+    3)
+      # No file metadata section: mc would not read the file at all, so write one.
+      { printf '[mc.ext.ini]\nVersion=4.0\n\n'; printf '%s\n\n' "$EXT_BLOCK"; cat "$file"; } > "$tmp" ||
+        die "could not write $tmp"
+      ;;
+    *)
+      rm -f "$tmp"
+      die "could not update $file"
+      ;;
+  esac
+  mv -f "$tmp" "$file" || die "could not update $file"
+}
+
+drop_block() {
+  local file=$1 tmp=$1.mc-fdd.$$
+
+  awk -v b="$BEGIN_MARK" -v e="$END_MARK" '
+    $0 == b { drop = 1 }
+    !drop { print }
+    $0 == e { drop = 0 }
+  ' "$file" > "$tmp" || { rm -f "$tmp"; die "could not update $file"; }
+  mv -f "$tmp" "$file" || die "could not update $file"
+}
+
+link_plugins() {
+  local dir=$1 plugin target
+
+  mkdir -p "$dir" || die "could not create $dir"
+  for plugin in $PLUGINS; do
+    [ -x "$LIBEXEC/$plugin" ] || die "$LIBEXEC/$plugin not found, set MC_FDD_LIBEXEC"
+    target=$dir/$plugin
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+      mv -f "$target" "$target.saved" || die "could not move $target aside"
+      echo "  $target moved to $target.saved"
+    fi
+    ln -sf "$LIBEXEC/$plugin" "$target" || die "could not link $target"
+    echo "  $target -> $LIBEXEC/$plugin"
+  done
+}
+
+unlink_plugins() {
+  local dir=$1 plugin target
+
+  for plugin in $PLUGINS; do
+    target=$dir/$plugin
+    if [ -L "$target" ] && [ "$(readlink "$target")" = "$LIBEXEC/$plugin" ]; then
+      rm -f "$target" && echo "  $target removed"
+    elif [ -e "$target" ]; then
+      echo "  $target left alone, it is not ours"
+    fi
+  done
+}
+
+do_install() {
+  local dir file
+  dir=$(extfs_dir)
+  file=$(ext_file)
+
+  echo "Installing the Vector-06C plugins for ${USER:-$(id -un)}:"
+  link_plugins "$dir"
+  [ -f "$file" ] || seed_ext_file "$file"
+  if has_block "$file"; then
+    drop_block "$file"
+  fi
+  add_block "$file"
+  echo "  $file registers *.fdd and *.hdd"
+  echo "Done. Press Enter on a disk image in mc to open it."
+}
+
+do_uninstall() {
+  local dir file
+  dir=$(extfs_dir)
+  file=$(ext_file)
+
+  echo "Removing the Vector-06C plugins for ${USER:-$(id -un)}:"
+  unlink_plugins "$dir"
+  if has_block "$file"; then
+    drop_block "$file"
+    echo "  $file no longer registers *.fdd and *.hdd"
+  fi
+  echo "Done."
+}
+
+do_status() {
+  local dir file plugin target
+  dir=$(extfs_dir)
+  file=$(ext_file)
+
+  echo "plugins:   $LIBEXEC"
+  echo "extfs.d:   $dir"
+  for plugin in $PLUGINS; do
+    target=$dir/$plugin
+    if [ -L "$target" ]; then
+      echo "  $plugin -> $(readlink "$target")"
+    elif [ -e "$target" ]; then
+      echo "  $plugin present, but not installed by $SELF"
+    else
+      echo "  $plugin not installed"
+    fi
+  done
+  echo "extensions: $file"
+  if has_block "$file"; then
+    echo "  *.fdd and *.hdd registered"
+  else
+    echo "  not registered"
+  fi
+}
+
+case ${1:-} in
+  install)   do_install ;;
+  uninstall) do_uninstall ;;
+  status)    do_status ;;
+  -h | --help | help) usage ;;
+  *) usage >&2; exit 1 ;;
+esac

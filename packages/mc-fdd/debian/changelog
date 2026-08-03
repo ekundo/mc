@@ -1,3 +1,12 @@
+mc-fdd (0.0.4-1) bullseye; urgency=medium
+
+  * ufdd carries the v06 disk format itself and no longer depends on the
+    system diskdefs of cpmtools.
+  * ufdd runs under bash: creating a user_N directory was broken under dash.
+  * The mc.ext.ini entry escapes the regular expression the way mc expects it.
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Mon, 03 Aug 2026 16:00:00 +0200
+
 mc-fdd (0.0.3-1) bullseye; urgency=medium
 
   * Bug fix

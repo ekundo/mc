@@ -1,18 +1,101 @@
-#!/bin/sh
+#!/bin/bash
+#
+# Midnight Commander extfs plugin for Vector-06C floppy images (*.fdd).
+#
+# The images carry a CP/M filesystem in the "v06" format, which cpmtools does not
+# know about, so the format definition travels with this script (see V06_DISKDEF).
+#
+# CP/M user numbers are shown as user_1 .. user_15 directories, user 0 being the
+# root of the image.
 
-GAWK=`which gawk 2>/dev/null` || GAWK=""
-CMPLS=`which cpmls 2>/dev/null` || CMPLS=""
-CMPCP=`which cpmcp 2>/dev/null` || CMPCP=""
-CMPRM=`which cpmrm 2>/dev/null` || CMPRM=""
-FMT="-f v06"
+GAWK=$(command -v gawk 2>/dev/null) || GAWK=""
+CPMLS=$(command -v cpmls 2>/dev/null) || CPMLS=""
+CPMCP=$(command -v cpmcp 2>/dev/null) || CPMCP=""
+CPMRM=$(command -v cpmrm 2>/dev/null) || CPMRM=""
+FMT="v06"
+
+V06_DISKDEF='diskdef v06
+  seclen 1024
+  tracks 164
+  sectrk 5
+  blocksize 2048
+  maxdir 128
+  boottrk 8
+end
+'
+
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
+
+abs_path() {
+  case "$1" in
+    /*) printf '%s\n' "$1" ;;
+    *)  printf '%s\n' "$PWD/$1" ;;
+  esac
+}
+
+# cpmtools reads the disk formats from a file called "diskdefs": the one in the
+# current directory if there is any, the system-wide one otherwise. There is no
+# option to point it at another file, hence a private copy holding the v06 format
+# and a change of directory before every call.
+diskdefs_dir() {
+  local dir=${MC_V06_DISKDEFS_DIR:-${XDG_CACHE_HOME:-${HOME:-${TMPDIR:-/tmp}}/.cache}/mc-vector06c}
+
+  [ -d "$dir" ] || mkdir -p -m 700 "$dir" || die "could not create $dir"
+  if [ ! -s "$dir/diskdefs" ]; then
+    printf '%s' "$V06_DISKDEF" > "$dir/diskdefs.$$" &&
+      mv -f "$dir/diskdefs.$$" "$dir/diskdefs" || die "could not write $dir/diskdefs"
+  fi
+  printf '%s\n' "$dir"
+}
+
+# cpmtools built with libdsk guesses the kind of image it was given and gets it
+# wrong on a freshly formatted one, so it is told to take the file as it is. A build
+# without libdsk knows no drivers at all and refuses the option, hence the retry.
+cpm() {
+  local tool=$1 out rc
+  shift
+
+  out=$( ( cd "$DISKDEFS_DIR" && "$tool" -T raw -f "$FMT" "$@" ) 2>&1 )
+  rc=$?
+  case $out in
+    *"accepts no options"*)
+      out=$( ( cd "$DISKDEFS_DIR" && "$tool" -f "$FMT" "$@" ) 2>&1 )
+      rc=$?
+      ;;
+  esac
+  if [ $rc -ne 0 ]; then
+    echo "Error: $out" >&2
+    return $rc
+  fi
+  printf '%s\n' "$out"
+}
+
+# A path inside the image is either FILE (user 0) or user_N/FILE. A slash is legal
+# in a CP/M name and is shown as U+2215 DIVISION SLASH, so translate it back here.
+path_to_user_file() {
+  printf '%s\n' "$1" | $GAWK '
+  {
+    user="0"
+    if (match($0, /^user_([1-9][0-5]?)\/(.*)/, arr)) {
+      user=arr[1]
+      file=arr[2]
+    } else {
+      file=$0
+    }
+    gsub(/∕/, "/", file)
+    print user":"file
+  }'
+}
 
 cpm_list() {
-  if [ -z "$CMPLS" ]; then
-      echo "Error: could not find cpmls" >&2
-      exit 1
-  fi
-  OWNER=$(ls -l "$1" | $GAWK '{ printf "%-8s %-8s\n", $3, $4 }')
-  $CMPLS $FMT -l "$1" | $GAWK -v owner="$OWNER" '
+  local image=$1 owner
+
+  [ -n "$CPMLS" ] || die "could not find cpmls"
+  owner=$(ls -l "$image" | $GAWK '{ printf "%-8s %-8s\n", $3, $4 }')
+  cpm "$CPMLS" -l "$image" | $GAWK -v owner="$owner" '
   {
     if (match($0, /^([1-9][0-5]?):/, arr)) {
       path = "user_"arr[1]"/"
@@ -28,91 +111,71 @@ cpm_list() {
       printf "%s   1 %s %8d %s %s %s %s\n", perm, owner, size, month, day, year, file
     }
   }'
+  [ "${PIPESTATUS[0]}" -eq 0 ] || exit 1
   exit 0
 }
 
-cpm_path_to_user_file() {
-  echo "$1" | $GAWK '
-  {
-    user="0"
-    if (match($0, /^user_([1-9][0-5]?)\/(.*)/, arr)) {
-      user=arr[1]
-      file=arr[2]
-    } else {
-      file=$0
-    }
-    gsub(/∕/, "/", file)
-    print user":"file
-  }'  
-}
-
 cpm_copyout() {
-  SOURCE=$(cpm_path_to_user_file "$2")
-  if [ -z "$CMPCP" ]; then
-      echo "Error: could not find cpmcp" >&2
-      exit 1
-  fi
-  ERR=$($CMPCP $FMT -p "$1" "$SOURCE" "$3")
-  if [ ! $? -eq 0 ]; then
-      echo "Error: $ERR" >&2
-      exit 1
-  fi
+  local image=$1 source dest=$3
+
+  [ -n "$CPMCP" ] || die "could not find cpmcp"
+  source=$(path_to_user_file "$2")
+  cpm "$CPMCP" -p "$image" "$source" "$dest" > /dev/null || exit 1
   exit 0
 }
 
 cpm_copyin() {
-  DEST=$(cpm_path_to_user_file "$2")
-  if [ -z "$CMPCP" ]; then
-      echo "Error: could not find cpmcp" >&2
-      exit 1
-  fi
-  ERR=$($CMPCP $FMT -p "$1" "$3" "$DEST")
-  if [ ! $? -eq 0 ]; then
-      echo "Error: $ERR" >&2
-      exit 1
-  fi
+  local image=$1 dest source=$3
+
+  [ -n "$CPMCP" ] || die "could not find cpmcp"
+  dest=$(path_to_user_file "$2")
+  cpm "$CPMCP" -p "$image" "$source" "$dest" > /dev/null || exit 1
   exit 0
 }
 
 cpm_rm() {
-  FILE=$(cpm_path_to_user_file "$2")
-  if [ -z "$CMPRM" ]; then
-      echo "Error: could not find cpmrm" >&2
-      exit 1
-  fi
-  ERR=$($CMPRM $FMT "$1" "$FILE")
-  if [ ! $? -eq 0 ]; then
-      echo "Error: $ERR" >&2
-      exit 1
-  fi
+  local image=$1 file
+
+  [ -n "$CPMRM" ] || die "could not find cpmrm"
+  file=$(path_to_user_file "$2")
+  cpm "$CPMRM" "$image" "$file" > /dev/null || exit 1
   exit 0
 }
 
+# The user_N directories are not stored anywhere: an empty one cannot exist and a
+# new one needs no work, it appears as soon as a file is put into it.
 cpm_mkdir() {
-  [[ "$2" =~ ^user_[1-9][0-5]?$ ]] && exit 0;  
-  exit 1;
+  case "$2" in
+    user_[1-9] | user_1[0-5]) exit 0 ;;
+    *) exit 1 ;;
+  esac
 }
 
 cpm_rmdir() {
-  exit 0;
+  exit 0
 }
 
-if [ -z "$GAWK" ]; then
-    echo "Error: could not find gawk" >&2
-    exit 1
-fi
+[ -n "$GAWK" ] || die "could not find gawk"
 
 LC_ALL=C
 export LC_ALL
 umask 077
 
-cmd="$1"
+cmd=$1
 shift
+
+image=$(abs_path "$1")
+shift
+set -- "$image" "$@"
+
+case "$cmd" in
+  list | copyout | copyin | rm) DISKDEFS_DIR=$(diskdefs_dir) || exit 1 ;;
+esac
 
 case "$cmd" in
   list)    cpm_list    "$@" ;;
-  copyout) cpm_copyout "$@" ;;
-  copyin)  cpm_copyin  "$@" ;;
+  copyout) cpm_copyout "$1" "$2" "$(abs_path "$3")" ;;
+  copyin)  cpm_copyin  "$1" "$2" "$(abs_path "$3")" ;;
   mkdir)   cpm_mkdir   "$@" ;;
   rmdir)   cpm_rmdir   "$@" ;;
   rm)      cpm_rm      "$@" ;;

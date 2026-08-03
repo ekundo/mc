@@ -3,15 +3,55 @@ set -e
 
 #DEBHELPER#
 
+# mc 4.8.30 and newer read mc.ext.ini, older versions read mc.ext, so both files get
+# an entry for *.fdd images. In mc.ext.ini a backslash is written twice.
+ext_ini_block() {
+	cat <<-EOF
+
+		# fdd images
+		[fdd]
+		Regex=\\\\.fdd\$
+		RegexIgnoreCase=true
+		Open=%cd %p/ufdd://
+	EOF
+}
+
+ext_block() {
+	cat <<-EOF
+
+		# fdd images
+		regex/\\.([fF][dD][dD])\$
+		  Open=%cd %p/ufdd://
+	EOF
+}
+
+# In mc.ext.ini the block goes right below the file metadata, before every other
+# section: mc takes the first match. mc.ext has no metadata, hence the marker.
+insert_after() {
+	marker=$1
+	orig=$2
+	target=$3
+	block=$4
+
+	{
+		sed -n "1,/$marker/p" "$orig"
+		$block
+		sed "1,/$marker/d" "$orig"
+	} > "$target"
+}
+
 case "$1" in
 
 	configure)
-		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n# fdd images\nregex/\.([fF][dD][dD])$\n  Open=%cd %p/ufdd://|' \
-			/etc/mc/mc.ext.mc-fdd-orig > /etc/mc/mc.ext.mc-fdd
-		sed -e 's|### Miscellaneous ###|### Miscellaneous ###\n\n[fdd]\nRegex=\\\.([fF][dD][dD])$\nOpen=%cd %p/ufdd://|' \
-			/etc/mc/mc.ext.ini.mc-fdd-orig > /etc/mc/mc.ext.ini.mc-fdd
-		echo 'diskdef v06\n  seclen 1024\n  tracks 164\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n' | \
-			cat - /etc/cpmtools/diskdefs.mc-fdd-orig > /etc/cpmtools/diskdefs.mc-fdd
+		insert_after '^Version[[:space:]]*=' \
+			/etc/mc/mc.ext.ini.mc-fdd-orig /etc/mc/mc.ext.ini.mc-fdd ext_ini_block
+		insert_after '^### Miscellaneous ###' \
+			/etc/mc/mc.ext.mc-fdd-orig /etc/mc/mc.ext.mc-fdd ext_block
+		# ufdd carries the v06 format itself, this one is for cpmtools used by hand.
+		{
+			printf 'diskdef v06\n  seclen 1024\n  tracks 164\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n\n'
+			cat /etc/cpmtools/diskdefs.mc-fdd-orig
+		} > /etc/cpmtools/diskdefs.mc-fdd
 	;;
 
 	*)

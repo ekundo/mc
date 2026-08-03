@@ -1,131 +1,147 @@
 #!/bin/bash
+#
+# Midnight Commander extfs plugin for Vector-06C hard disk images (*.hdd).
+#
+# An .hdd image is a stack of floppy images that share one boot area: the number of
+# floppies is a 16 bit little endian word at offset 132, the boot area holds the
+# first seven tracks of every floppy, and the rest of each floppy follows one after
+# another. Reading a disk out of the container therefore means gluing the shared
+# boot area and the data of that disk together into a plain .fdd image.
 
-GAWK=`which gawk 2>/dev/null` || GAWK=""
-XXD=`which xxd 2>/dev/null` || XXD=""
-DATE=`which date 2>/dev/null` || DATE=""
-BC=`which bc 2>/dev/null` || BC=""
-SEQ=`which seq 2>/dev/null` || SEQ=""
-TAIL=`which tail 2>/dev/null` || TAIL=""
-HEAD=`which head 2>/dev/null` || HEAD=""
-DD=`which dd 2>/dev/null` || DD=""
+DISK_COUNT_OFFSET=132
+BOOT_OFFSET=1024
+BOOT_BYTES=35840
+DATA_OFFSET=36864
+DISK_BYTES=803840
+FDD_BYTES=$((BOOT_BYTES + DISK_BYTES))
+BLOCK=512
 
-cpm_list() {
-  OWNER=$(ls -l "$1" | $GAWK '{ printf "%-8s %-8s", $3, $4 }')
+die() {
+  echo "Error: $*" >&2
+  exit 1
+}
 
-  DISKS_RAW=$($XXD -u -p -l2 -s132 "$1")
-  DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
-  DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
+abs_path() {
+  case "$1" in
+    /*) printf '%s\n' "$1" ;;
+    *)  printf '%s\n' "$PWD/$1" ;;
+  esac
+}
 
-  FILE_DATE=$($DATE -r "$1" "+%m-%d-%Y %H:%M:%S")
+file_size() {
+  local size
+  size=$(stat -f %z "$1" 2>/dev/null) || size=$(stat -c %s "$1" 2>/dev/null) || return 1
+  printf '%s\n' "$size"
+}
 
-  for DISK in $($SEQ 1 $DISKS); do echo $DISK; done | $GAWK -v owner="$OWNER" -v file_date="$FILE_DATE" '
-  {
-    printf "-rw-rw-rw-   1 %s   839680 %s disk_%04X.fdd\n", owner, file_date, $1
-  }'
+file_date() {
+  local mtime
 
+  date -r "$1" '+%m-%d-%Y %H:%M:%S' 2>/dev/null && return 0
+  mtime=$(stat -c %Y "$1" 2>/dev/null) || mtime=$(stat -f %m "$1" 2>/dev/null) || return 1
+  date -d "@$mtime" '+%m-%d-%Y %H:%M:%S' 2>/dev/null ||
+    date -r "$mtime" '+%m-%d-%Y %H:%M:%S' 2>/dev/null
+}
+
+file_owner() {
+  local fields
+  fields=($(ls -l "$1")) || return 1
+  printf '%-8s %-8s\n' "${fields[2]}" "${fields[3]}"
+}
+
+read_u16le() {
+  local offset=$2 bytes
+  bytes=$(od -An -tu1 -j"$offset" -N2 "$1") || return 1
+  set -- $bytes
+  [ $# -eq 2 ] || return 1
+  printf '%s\n' $(($1 + $2 * 256))
+}
+
+disk_count() {
+  read_u16le "$1" "$DISK_COUNT_OFFSET"
+}
+
+disk_number() {
+  [[ $1 =~ ^disk_([0-9A-Fa-f]{4})\.fdd$ ]] || return 1
+  printf '%s\n' $((16#${BASH_REMATCH[1]}))
+}
+
+# The block within the container where the data of the given disk starts.
+disk_block() {
+  printf '%s\n' $((DATA_OFFSET / BLOCK + ($1 - 1) * (DISK_BYTES / BLOCK)))
+}
+
+checked_disk_number() {
+  local image=$1 disk disks
+
+  disk=$(disk_number "$2") || die "no such disk: $2"
+  disks=$(disk_count "$image") || die "could not read the disk count of $image"
+  [ "$disk" -ge 1 ] && [ "$disk" -le "$disks" ] || die "no such disk: $2"
+  printf '%s\n' "$disk"
+}
+
+hdd_list() {
+  local image=$1 owner date disks disk
+
+  owner=$(file_owner "$image") || die "could not stat $image"
+  date=$(file_date "$image") || die "could not stat $image"
+  disks=$(disk_count "$image") || die "could not read the disk count of $image"
+
+  for ((disk = 1; disk <= disks; disk++)); do
+    printf -- "-rw-rw-rw-   1 %s %8d %s disk_%04X.fdd\n" "$owner" "$FDD_BYTES" "$date" "$disk"
+  done
   exit 0
 }
 
-disk_hex_num() {
-  echo "$1" | $GAWK '
-  {
-    if (match($0, /^disk_([0-9A-F]{4})/, arr)) {
-      num=arr[1]
-    } else {
-      num=""
-    }
-    print num
-  }'
+hdd_copyout() {
+  local image=$1 dest=$3 disk
+
+  disk=$(checked_disk_number "$image" "$2") || exit 1
+
+  dd if="$image" of="$dest" bs=$BLOCK \
+    skip=$((BOOT_OFFSET / BLOCK)) count=$((BOOT_BYTES / BLOCK)) 2> /dev/null ||
+    die "could not read the boot area of $image"
+  dd if="$image" of="$dest" bs=$BLOCK conv=notrunc \
+    skip=$(disk_block "$disk") seek=$((BOOT_BYTES / BLOCK)) count=$((DISK_BYTES / BLOCK)) 2> /dev/null ||
+    die "could not read disk $2 of $image"
+  exit 0
 }
 
-cpm_copyout() {
-  DISK_HEX=$(disk_hex_num "$2")
-  if [ "$DISK_HEX" = "" ]; then
-    echo "Error: file not found" >&2
-    exit 1
-  fi
+hdd_copyin() {
+  local image=$1 source=$3 disk size blocks
 
-  $TAIL -c +1025 "$1" | $HEAD -c 35840 > "$3" 2> /dev/null
+  disk=$(checked_disk_number "$image" "$2") || exit 1
+  size=$(file_size "$source") || die "could not stat $source"
+  [ "$size" -gt "$BOOT_BYTES" ] || die "$source is not a floppy image"
 
-  DISK=$(echo "obase=10;ibase=16;$DISK_HEX" | $BC)
-  OFFSET=$(((DISK-1)*803840+36864+1))
+  # Everything the source has past the boot area, one disk worth of blocks at most.
+  blocks=$(((size - BOOT_BYTES) / BLOCK))
+  [ "$blocks" -le $((DISK_BYTES / BLOCK)) ] || blocks=$((DISK_BYTES / BLOCK))
 
-  $TAIL -c +$OFFSET "$1" | $HEAD -c 803840 >> "$3" 2> /dev/null
-  exit $?
+  dd if="$source" of="$image" bs=$BLOCK conv=notrunc \
+    skip=$((BOOT_BYTES / BLOCK)) seek=$(disk_block "$disk") count="$blocks" 2> /dev/null ||
+    die "could not write disk $2 of $image"
+  exit 0
 }
 
-cpm_copyin() {
-  DISK_HEX=$(disk_hex_num "$2")
-  if [ "$DISK_HEX" = "" ]; then
-    echo "Error: invalid destionation" >&2
-    exit 1
-  fi
-  DISK=$(echo "obase=10;ibase=16;$DISK_HEX" | $BC)
-
-  if [ $DISK -lt 1 ]; then
-      echo "Error: invalid destionation" >&2
-      exit 1
-  fi
-
-  DISKS_RAW=$($XXD -u -p -l2 -s132 "$1")
-  DISKS_HEX="${DISKS_RAW:2:2}${DISKS_RAW:0:2}"
-  DISKS=$(echo "obase=10;ibase=16;$DISKS_HEX" | $BC)
-
-  if [ $DISK -gt $DISKS ]; then
-      echo "Error: invalid destionation" >&2
-      exit 1
-  fi
-
-  OFFSET=$(((DISK-1)*1570+72))
-
-  $DD if="$3" of="$1" bs=512 skip=70 seek=$OFFSET count=1570 conv=notrunc &> /dev/null
-  exit $?
-}
-
-if [ -z "$GAWK" ]; then
-    echo "Error: could not find gawk" >&2
-    exit 1
-fi
-if [ -z "$XXD" ]; then
-    echo "Error: could not find xxd" >&2
-    exit 1
-fi
-if [ -z "$DATE" ]; then
-    echo "Error: could not find date" >&2
-    exit 1
-fi
-if [ -z "$BC" ]; then
-    echo "Error: could not find bc" >&2
-    exit 1
-fi
-if [ -z "$SEQ" ]; then
-    echo "Error: could not find seq" >&2
-    exit 1
-fi
-if [ -z "$TAIL" ]; then
-    echo "Error: could not find tail" >&2
-    exit 1
-fi
-if [ -z "$HEAD" ]; then
-    echo "Error: could not find head" >&2
-    exit 1
-fi
-if [ -z "$DD" ]; then
-    echo "Error: could not find dd" >&2
-    exit 1
-fi
+command -v od > /dev/null 2>&1 || die "could not find od"
+command -v dd > /dev/null 2>&1 || die "could not find dd"
 
 LC_ALL=C
 export LC_ALL
 umask 077
 
-cmd="$1"
+cmd=$1
 shift
 
+image=$(abs_path "$1")
+shift
+set -- "$image" "$@"
+
 case "$cmd" in
-  list)    cpm_list    "$@" ;;
-  copyout) cpm_copyout "$@" ;;
-  copyin)  cpm_copyin  "$@" ;;
+  list)    hdd_list    "$@" ;;
+  copyout) hdd_copyout "$1" "$2" "$(abs_path "$3")" ;;
+  copyin)  hdd_copyin  "$1" "$2" "$(abs_path "$3")" ;;
   *) exit 1 ;;
 esac
 exit 0

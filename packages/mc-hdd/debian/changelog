@@ -1,3 +1,13 @@
+mc-hdd (0.0.4-1) bullseye; urgency=medium
+
+  * uhdd reads the container with od and bash arithmetic, so xxd, bc, seq and
+    gawk are not needed anymore.
+  * uhdd refuses a disk number the container does not have instead of writing
+    past its end.
+  * The mc.ext.ini entry escapes the regular expression the way mc expects it.
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Mon, 03 Aug 2026 16:00:00 +0200
+
 mc-hdd (0.0.3-1) bullseye; urgency=medium
 
   * Bug fix.
