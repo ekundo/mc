@@ -90,11 +90,19 @@ A floppy image is 839680 bytes: 164 tracks of 5 sectors of 1024 bytes, the first
 being the system area, the rest a CP/M filesystem with 2048 byte blocks and 128 directory
 entries.
 
-A hard disk image is a stack of floppies sharing one boot area: a 16 bit little endian
-count of them sits at offset 132, the boot area holds the first seven tracks of every
-floppy, and the data of the floppies follows one after another. Reading a disk out of a
-container therefore means gluing the shared boot area and the data of that disk back into
-a plain `.fdd` image, which is what `uhdd` hands over to mc.
+A hard disk image is a stack of floppies: a 16 bit little endian count of them sits at
+offset 132, the 8 reserved tracks lie on the container once, in sectors 2..81, and from
+sector 82 on the floppies follow one after another, 1570 sectors each, every one of them
+beginning with its own CP/M directory. Reading a disk out of a container therefore means
+gluing a reserved area and the 1560 sectors from that directory back into a plain `.fdd`
+image, which is what `uhdd` hands over to mc.
+
+Only the first floppy owns the reserved area of the container: the 80 sectors before the
+directory of any other one are the tail of the floppy before it, so the rest get an area
+of `E5h`, the way formatting leaves it. And the container holds 392 blocks per floppy
+where an image of 164 tracks has room for 390 — floppies that reached the last two do
+exist, and such a floppy comes out as an image of 166 tracks instead, 849920 bytes, the
+size `T72.fdd` itself has.
 
 ## Repository layout
 
@@ -104,6 +112,7 @@ packages/mc-hdd/    uhdd and its Debian packaging
 brew/mc-fdd         the command that hooks the plugins into mc for one user
 ppa/                the apt repository served from GitHub Pages
 build               builds both packages and refreshes ppa/
+test-uhdd           checks uhdd against a container built on the spot
 ```
 
 `./build` needs a Debian machine with `dpkg-buildpackage` and `config-package-dev`, plus

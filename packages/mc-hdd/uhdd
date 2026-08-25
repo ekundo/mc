@@ -2,19 +2,37 @@
 #
 # Midnight Commander extfs plugin for Vector-06C hard disk images (*.hdd).
 #
-# An .hdd image is a stack of floppy images that share one boot area: the number of
-# floppies is a 16 bit little endian word at offset 132, the boot area holds the
-# first seven tracks of every floppy, and the rest of each floppy follows one after
-# another. Reading a disk out of the container therefore means gluing the shared
-# boot area and the data of that disk together into a plain .fdd image.
+# An .hdd image is a stack of floppy images. How many of them there are is a 16 bit
+# little endian word at offset 132. The reserved tracks 0..7 lie on the container
+# once, in sectors 2..81; from sector 82 on the floppies follow one after another,
+# 1570 sectors each, and a floppy begins with its own CP/M directory, everything
+# inside it being counted from there. Reading a disk out of the container therefore
+# means gluing a reserved area and the 1560 sectors from that directory together
+# into a plain .fdd image.
+#
+# Three independent sources agree on these numbers: the cpmtools diskdef the ufdd
+# plugin carries (boottrk 8, tracks 164), the DPB of MicroDOS itself (OFF=8,
+# DSM=187h), and a search for CP/M directories over a real container, which finds
+# them 1570 sectors apart.
 
 DISK_COUNT_OFFSET=132
-BOOT_OFFSET=1024
-BOOT_BYTES=35840
-DATA_OFFSET=36864
-DISK_BYTES=803840
-FDD_BYTES=$((BOOT_BYTES + DISK_BYTES))
+SYS_OFFSET=1024                          # sector 2: the shared reserved tracks 0..7
+SYS_BYTES=40960                          # 80 sectors, 8 tracks
+DIR_OFFSET=41984                         # sector 82: the directory of disk 1
+DISK_STEP=803840                         # 1570 sectors from one directory to the next
+CPM_BYTES=798720                         # 1560 sectors: the directory and blocks 0..389
+BIG_CPM_BYTES=802816                     # 1568 sectors: blocks 390 and 391 as well
+FDD_BYTES=$((SYS_BYTES + CPM_BYTES))     # 839680: 1640 sectors, 164 tracks
+BIG_FDD_BYTES=849920                     # 1660 sectors, 166 tracks, as T72.fdd is
 BLOCK=512
+DIR_BYTES=4096                           # 8 sectors: 128 directory entries of 32
+
+# The DPB of the system promises 392 blocks and the container does hold them, but
+# only 390 of them (0..389) fit the 164 tracks of an ordinary floppy image. Four
+# disks of the 324 on a real container reach the last two with real files, hence
+# the larger image below rather than a silently truncated one.
+FDD_MAX_BLOCK=389
+HDD_MAX_BLOCK=391
 
 die() {
   echo "Error: $*" >&2
@@ -66,9 +84,10 @@ disk_number() {
   printf '%s\n' $((16#${BASH_REMATCH[1]}))
 }
 
-# The block within the container where the data of the given disk starts.
+# The block within the container where the directory of the given disk sits, and
+# with it the start of that disk: the floppies are laid end to end, with no gaps.
 disk_block() {
-  printf '%s\n' $((DATA_OFFSET / BLOCK + ($1 - 1) * (DISK_BYTES / BLOCK)))
+  printf '%s\n' $((DIR_OFFSET / BLOCK + ($1 - 1) * (DISK_STEP / BLOCK)))
 }
 
 checked_disk_number() {
@@ -80,6 +99,70 @@ checked_disk_number() {
   printf '%s\n' "$disk"
 }
 
+# The 4096 bytes of a directory, kept in DIR for the two readers below. Byte by
+# byte rather than word by word on purpose: the format is little endian whatever
+# the machine running this is. Without -v od collapses repeated lines into a "*",
+# and a directory is mostly repeated lines.
+read_dir() {
+  DIR=($(od -An -v -tu1 -j"$2" -N$DIR_BYTES "$1")) || return 1
+  [ ${#DIR[@]} -eq $DIR_BYTES ] || return 1
+}
+
+# The highest block the directory points at. Entries above 1Fh in byte 0 are left
+# out: a free entry has E5h there, and the disk label and time stamp entries of
+# CP/M 3 keep no block table in bytes 16..31 at all.
+dir_top_block() {
+  local rec p blk top=0
+
+  for ((rec = 0; rec < DIR_BYTES; rec += 32)); do
+    (( DIR[rec] > 31 )) && continue
+    for ((p = rec + 16; p < rec + 32; p += 2)); do
+      blk=$((DIR[p] + DIR[p + 1] * 256))
+      (( blk > top )) && top=$blk
+    done
+  done
+  printf '%s\n' "$top"
+}
+
+# Does this look like a CP/M directory at all? Anything can be dropped into an mc
+# panel, and writing something else into the container would ruin a floppy without
+# a word. Every entry has to be either free or one of user area 0..31, and a name
+# has to be a name: all zeroes would otherwise pass as files of user 0 with blank
+# names, 00h being a legal user area. The high bit of a name byte is a flag.
+looks_like_dir() {
+  local rec k c files=0 blank
+
+  for ((rec = 0; rec < DIR_BYTES; rec += 32)); do
+    (( DIR[rec] == 0xE5 )) && continue
+    (( DIR[rec] > 31 )) && return 1
+    blank=1
+    for ((k = rec + 1; k <= rec + 11; k++)); do
+      c=$((DIR[k] & 0x7F))
+      (( c < 0x20 || c > 0x7E )) && return 1
+      (( c != 0x20 )) && blank=0
+    done
+    (( blank )) && return 1
+    files=$((files + 1))
+  done
+  (( files > 0 ))
+}
+
+# What formatting leaves in the reserved area of a floppy that carries no system:
+# E5h, not zeroes. Checked on co-t72f.fdd, where all 40960 bytes of it are E5h.
+fill_e5() {
+  local blocks=$1 chunk=$'\345' n=1 i
+
+  while (( n < BLOCK )); do
+    chunk=$chunk$chunk
+    n=$((n * 2))
+  done
+  for ((i = 0; i < blocks; i++)); do printf '%s' "$chunk"; done
+}
+
+# The size shown is the usual one for every disk. The four disks in a container of
+# 324 that need the larger image are only known after reading their directory, and
+# doing that for every disk would cost a couple of hundred od calls before the
+# panel appears; copyout hands over the larger image where it is due.
 hdd_list() {
   local image=$1 owner date disks disk
 
@@ -94,32 +177,76 @@ hdd_list() {
 }
 
 hdd_copyout() {
-  local image=$1 dest=$3 disk
+  local image=$1 dest=$3 disk base top cpm_secs img_secs pad
 
   disk=$(checked_disk_number "$image" "$2") || exit 1
+  base=$(disk_block "$disk")
 
-  dd if="$image" of="$dest" bs=$BLOCK \
-    skip=$((BOOT_OFFSET / BLOCK)) count=$((BOOT_BYTES / BLOCK)) 2> /dev/null ||
-    die "could not read the boot area of $image"
+  read_dir "$image" $((base * BLOCK)) ||
+    die "could not read the directory of disk $2 of $image"
+  top=$(dir_top_block)
+
+  # A floppy that reached block 390 or 391 does not fit 164 tracks, so it goes out
+  # as 166 of them, the size of T72.fdd itself: a whole number of cylinders and a
+  # size that is in use. The other two ways out are refusing the disk and cutting
+  # the tail off a file, and the second of those is the worst thing to do.
+  if [ "$top" -gt "$FDD_MAX_BLOCK" ]; then
+    cpm_secs=$((BIG_CPM_BYTES / BLOCK))
+    img_secs=$((BIG_FDD_BYTES / BLOCK))
+  else
+    cpm_secs=$((CPM_BYTES / BLOCK))
+    img_secs=$((FDD_BYTES / BLOCK))
+  fi
+
+  # The reserved area belongs to disk 1 alone. On the container it lies once, and
+  # the 80 sectors before the directory of any other disk are not its own but the
+  # tail of the disk before it, so the others get what formatting leaves. This is
+  # a decision and not a detail: handing them the shared area would make every
+  # image bootable, and none of them a copy of a floppy that ever existed.
+  if [ "$disk" -eq 1 ]; then
+    dd if="$image" of="$dest" bs=$BLOCK \
+      skip=$((SYS_OFFSET / BLOCK)) count=$((SYS_BYTES / BLOCK)) 2> /dev/null ||
+      die "could not read the reserved area of $image"
+  else
+    fill_e5 $((SYS_BYTES / BLOCK)) > "$dest" || die "could not write $dest"
+  fi
+
   dd if="$image" of="$dest" bs=$BLOCK conv=notrunc \
-    skip=$(disk_block "$disk") seek=$((BOOT_BYTES / BLOCK)) count=$((DISK_BYTES / BLOCK)) 2> /dev/null ||
+    skip="$base" seek=$((SYS_BYTES / BLOCK)) count="$cpm_secs" 2> /dev/null ||
     die "could not read disk $2 of $image"
+
+  pad=$((img_secs - SYS_BYTES / BLOCK - cpm_secs))
+  [ "$pad" -eq 0 ] || fill_e5 "$pad" >> "$dest" || die "could not write $dest"
   exit 0
 }
 
 hdd_copyin() {
-  local image=$1 source=$3 disk size blocks
+  local image=$1 source=$3 disk size top blocks
 
   disk=$(checked_disk_number "$image" "$2") || exit 1
   size=$(file_size "$source") || die "could not stat $source"
-  [ "$size" -gt "$BOOT_BYTES" ] || die "$source is not a floppy image"
+  [ "$size" -ge $((SYS_BYTES + DIR_BYTES)) ] ||
+    die "$source is too short to be a floppy image"
 
-  # Everything the source has past the boot area, one disk worth of blocks at most.
-  blocks=$(((size - BOOT_BYTES) / BLOCK))
-  [ "$blocks" -le $((DISK_BYTES / BLOCK)) ] || blocks=$((DISK_BYTES / BLOCK))
+  read_dir "$source" $SYS_BYTES || die "could not read $source"
+  looks_like_dir ||
+    die "no CP/M directory at sector 80 of $source, not a floppy image?"
+  top=$(dir_top_block)
+  [ $((SYS_BYTES + (top + 1) * 4 * BLOCK)) -le "$size" ] ||
+    die "the directory of $source points past the end of the image, at block $top"
+  [ "$top" -le "$HDD_MAX_BLOCK" ] ||
+    die "$source uses block $top, past $HDD_MAX_BLOCK, more than a disk here holds"
+
+  # Everything the source has past its reserved area, one filesystem worth at
+  # most: the label sector behind it is ours and the sector behind that belongs to
+  # the next floppy, so neither is ever written. A source of the usual 164 tracks
+  # leaves blocks 390 and 391 of this disk alone, and rightly so: the directory it
+  # brings does not point at them, so the system counts them free.
+  blocks=$(((size - SYS_BYTES) / BLOCK))
+  [ "$blocks" -le $((BIG_CPM_BYTES / BLOCK)) ] || blocks=$((BIG_CPM_BYTES / BLOCK))
 
   dd if="$source" of="$image" bs=$BLOCK conv=notrunc \
-    skip=$((BOOT_BYTES / BLOCK)) seek=$(disk_block "$disk") count="$blocks" 2> /dev/null ||
+    skip=$((SYS_BYTES / BLOCK)) seek=$(disk_block "$disk") count="$blocks" 2> /dev/null ||
     die "could not write disk $2 of $image"
   exit 0
 }

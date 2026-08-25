@@ -1,0 +1,197 @@
+#!/bin/bash
+#
+# Checks for the uhdd plugin, on a container built here rather than a real one, so
+# this runs anywhere. The point of most of them is arithmetic: the reserved area is
+# eight tracks and a floppy begins at its directory, and every sector of the
+# container carries a marker of its own, so a shift of even one sector shows up.
+#
+# cpmtools, if installed, is used for the last check; ufdd is not covered.
+
+LC_ALL=C
+export LC_ALL
+
+UHDD=$(dirname "$0")/packages/mc-hdd/uhdd
+DISKS=4                                  # the third one reaches blocks 390, 391
+BIG=3
+SEC=512
+SYS=80                                   # reserved sectors: 2..81
+DIR=82                                   # the directory of disk 1
+STEP=1570
+CPM=1560
+E5=229
+
+ok=0
+bad=0
+
+pass() { printf '  ok   %s\n' "$*"; ok=$((ok + 1)); }
+fail() { printf '  FAIL %s\n' "$*"; bad=$((bad + 1)); }
+check() { if [ "$1" = 0 ]; then pass "$2"; else fail "$2${3:+ ($3)}"; fi; }
+
+emit() {
+  local v
+  for v in "$@"; do printf "\\$(printf '%03o' "$v")"; done
+}
+
+# The given byte, count times. By doubling, so a sector costs ten printfs and not
+# five hundred: the container below is three megabytes.
+rep() {
+  local n=$1 chunk k=1
+  chunk=$(emit "$2")
+  while (( k < n )); do chunk=$chunk$chunk; k=$((k * 2)); done
+  printf '%s' "${chunk:0:$n}"
+}
+
+# One directory entry: user, name, extension, record count, then its blocks.
+entry() {
+  local user=$1 name=$2 ext=$3 rc=$4 i c
+  shift 4
+
+  emit "$user"
+  for ((i = 0; i < 8; i++)); do c=${name:$i:1}; printf '%s' "${c:- }"; done
+  for ((i = 0; i < 3; i++)); do c=${ext:$i:1};  printf '%s' "${c:- }"; done
+  emit 0 0 0 "$rc"
+  for ((i = 0; i < 8; i++)); do
+    if [ $# -gt 0 ]; then emit $(($1 % 256)) $(($1 / 256)); shift; else emit 0 0; fi
+  done
+}
+
+# Every sector says which disk and which sector of the container it is.
+marker() {
+  local m
+  printf -v m '%-16s' "D$1-S$2"
+  printf '%s%s%s%s%s%s%s%s' "$m" "$m" "$m" "$m" "$m" "$m" "$m" "$m"
+  printf '%s%s%s%s%s%s%s%s' "$m" "$m" "$m" "$m" "$m" "$m" "$m" "$m"
+  printf '%s%s%s%s%s%s%s%s' "$m" "$m" "$m" "$m" "$m" "$m" "$m" "$m"
+  printf '%s%s%s%s%s%s%s%s' "$m" "$m" "$m" "$m" "$m" "$m" "$m" "$m"
+}
+
+# A container of DISKS floppies: a header, one reserved area, and the floppies
+# laid end to end, each beginning with its directory.
+build() {
+  local d s used
+
+  rep 128 $E5
+  emit 32 16 $((993 % 256)) $((993 / 256)) $((DISKS % 256)) $((DISKS / 256))
+  rep $((SEC - 134)) $E5
+  marker sys 1
+
+  for ((s = 2; s < DIR; s++)); do marker sys "$s"; done
+
+  for ((d = 1; d <= DISKS; d++)); do
+    entry 0 "DISK$d" BIN 64 2 3 4 5
+    if [ "$d" = "$BIG" ]; then entry 0 TAIL BIN 32 390 391; used=64; else used=32; fi
+    rep $((8 * SEC - used)) $E5
+    for ((s = 8; s < STEP; s++)); do marker "$d" $((DIR + (d - 1) * STEP + s)); done
+  done
+}
+
+base() { echo $((DIR + ($1 - 1) * STEP)); }
+name() { printf 'disk_%04X.fdd\n' "$1"; }
+sz() { stat -f %z "$1" 2>/dev/null || stat -c %s "$1"; }
+part() { dd if="$1" bs=$SEC skip="${2:-0}" ${3:+count=$3} 2>/dev/null; }
+same() { cmp -s <(part "$1" "$2" "$4") <(part "$3" "$5" "$4"); }
+
+# All E5h and nothing else, count sectors from the given one.
+all_e5() {
+  local n
+  n=$(part "$1" "$2" "$3" | od -An -v -tu1 | tr ' ' '\n' | grep -c "^$E5\$")
+  [ "$n" = $(($3 * SEC)) ] || { echo "$n of $(($3 * SEC)) bytes"; return 1; }
+}
+
+WORK=$(mktemp -d) || exit 1
+trap 'rm -rf "$WORK"' EXIT
+HDD=$WORK/test.hdd
+ORIG=$WORK/orig.hdd
+
+build > "$HDD"
+cp "$HDD" "$ORIG"
+echo "container: $(sz "$HDD") bytes, $DISKS disks"
+
+echo "1. copyout of the first disk is what the container holds, byte for byte"
+"$UHDD" copyout "$HDD" "$(name 1)" "$WORK/d1.fdd" || fail "copyout failed"
+check $([ "$(sz "$WORK/d1.fdd")" = 839680 ]; echo $?) "the image is 839680 bytes" "$(sz "$WORK/d1.fdd")"
+same "$WORK/d1.fdd" 0 "$HDD" 1640 2
+check $? "sectors 2..1641 of the container and nothing else"
+
+echo "2. copyout of a later disk: its own directory, no bytes of its neighbour"
+for d in 2 4; do
+  f=$WORK/d$d.fdd
+  "$UHDD" copyout "$HDD" "$(name $d)" "$f" || fail "copyout $d failed"
+  same "$f" $SYS "$HDD" $CPM "$(base $d)"
+  check $? "disk $d: the directory and the blocks are at sector $SYS"
+  why=$(all_e5 "$f" 0 $SYS)
+  check $? "disk $d: the reserved area is E5h, not the tail of disk $((d - 1))" "$why"
+done
+
+echo "3. a disk that reached block 390 comes out as 166 tracks"
+f=$WORK/big.fdd
+"$UHDD" copyout "$HDD" "$(name $BIG)" "$f" || fail "copyout $BIG failed"
+check $([ "$(sz "$f")" = 849920 ]; echo $?) "the image is 849920 bytes" "$(sz "$f")"
+same "$f" $SYS "$HDD" 1568 "$(base $BIG)"
+check $? "blocks 0..391 are all there"
+why=$(all_e5 "$f" 1648 12)
+check $? "the tail past block 391 is E5h" "$why"
+check $([ "$(sz "$WORK/d2.fdd")" = 839680 ]; echo $?) "and an ordinary disk stays 839680"
+
+echo "4. copyin of what copyout gave changes nothing"
+for d in 2 $BIG; do
+  "$UHDD" copyout "$HDD" "$(name $d)" "$WORK/r.fdd" || fail "copyout $d failed"
+  "$UHDD" copyin  "$HDD" "$(name $d)" "$WORK/r.fdd" || fail "copyin $d failed"
+  cmp -s "$HDD" "$ORIG"
+  check $? "disk $d: the container is untouched"
+done
+
+echo "5. copyin stays inside the disk it was given"
+d=2
+"$UHDD" copyout "$HDD" "$(name 4)" "$WORK/src.fdd" || fail "copyout failed"
+"$UHDD" copyin "$HDD" "$(name $d)" "$WORK/src.fdd" || fail "copyin failed"
+same "$HDD" 0 "$ORIG" "$(base $d)" 0
+check $? "everything before disk $d is untouched"
+same "$HDD" "$(base $d)" "$WORK/src.fdd" $CPM $SYS
+check $? "the floppy landed at the directory of disk $d"
+same "$HDD" $(($(base $d) + $CPM)) "$ORIG" 10 $(($(base $d) + $CPM))
+check $? "blocks 390 and 391, the label and the disk after it are untouched"
+cp "$ORIG" "$HDD"
+
+echo "6. copyin refuses what is not a floppy image"
+refuse() {
+  local out rc
+  out=$("$UHDD" copyin "$HDD" "$(name 2)" "$1" 2>&1)
+  rc=$?
+  case $out in
+    *"$2"*) check $([ $rc != 0 ]; echo $?) "$3" "it took it" ;;
+    *) fail "$3" "rc=$rc, $out" ;;
+  esac
+}
+dd if=/dev/zero of="$WORK/short.bin" bs=1024 count=8 2> /dev/null
+refuse "$WORK/short.bin" "too short" "a file shorter than the reserved area"
+dd if=/dev/zero of="$WORK/zero.bin" bs=$SEC count=1640 2> /dev/null
+refuse "$WORK/zero.bin" "no CP/M directory" "an image of nothing but zeroes"
+part "$WORK/d4.fdd" 0 90 > "$WORK/cut.fdd"
+refuse "$WORK/cut.fdd" "past the end" "an image cut short of its own blocks"
+# The image of a big disk with block 392 put into the first directory entry.
+{ part "$WORK/big.fdd" 0 $SYS
+  entry 0 OVER BIN 32 392 393
+  dd if="$WORK/big.fdd" bs=1 skip=$((SYS * SEC + 32)) count=$((8 * SEC - 32)) 2> /dev/null
+  part "$WORK/big.fdd" $((SYS + 8)); } > "$WORK/over.fdd"
+refuse "$WORK/over.fdd" "past 391" "an image using a block no disk here has"
+cmp -s "$HDD" "$ORIG"
+check $? "the container is untouched by all of that"
+
+echo "7. cpmls reads the images"
+if command -v cpmls > /dev/null 2>&1; then
+  printf 'diskdef v06\n  seclen 1024\n  tracks 164\n  sectrk 5\n  blocksize 2048\n  maxdir 128\n  boottrk 8\nend\n' \
+    > "$WORK/diskdefs"
+  for d in 1 2 4; do
+    out=$(cd "$WORK" && cpmls -T raw -f v06 "$WORK/d$d.fdd" 2>&1)
+    case $out in *"accepts no options"*) out=$(cd "$WORK" && cpmls -f v06 "$WORK/d$d.fdd" 2>&1) ;; esac
+    case $out in *"disk$d.bin"*) pass "disk $d: cpmls lists disk$d.bin" ;;
+                             *) fail "disk $d" "$out" ;; esac
+  done
+else
+  echo "  skip cpmtools is not installed"
+fi
+
+echo
+echo "$ok ok, $bad failed"
+[ $bad = 0 ]

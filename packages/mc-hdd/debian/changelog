@@ -1,3 +1,18 @@
+mc-hdd (0.0.6-1) bullseye; urgency=medium
+
+  * uhdd takes the reserved area of a container as eight tracks and starts a
+    floppy at its directory. It used to take seven and start ten sectors before
+    the directory, so every floppy but the first was handed the tail of the one
+    before it in place of its eighth track.
+  * uhdd hands over blocks 390 and 391, which the container holds and the DPB of
+    the system counts. Files did reach them and were coming out with the tail cut
+    off and no word about it; a floppy like that is now an image of 166 tracks,
+    the size T72.fdd itself has.
+  * uhdd refuses a file that carries no CP/M directory instead of writing it into
+    the container, and never writes over the label sector of a floppy.
+
+ -- Yauheni Kundo <e.kundo@gmail.com>  Tue, 25 Aug 2026 22:00:00 +0200
+
 mc-hdd (0.0.5-1) bullseye; urgency=medium
 
   * mc-fdd version bumped.
